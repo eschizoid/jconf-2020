@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Implementation-Title: Spark Project Examples
+Implementation-Version: 2.4.2
+Built-By: mgonzalez
+Specification-Vendor: The Apache Software Foundation
+Specification-Title: Spark Project Examples
+Implementation-Vendor-Id: org.apache.spark
+Created-By: Apache Maven 3.6.1
+Build-Jdk: 1.8.0_181
+Specification-Version: 2.4
+Implementation-URL: http://spark.apache.org/
+Implementation-Vendor: The Apache Software Foundation
+
