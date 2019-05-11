@@ -1,0 +1,20 @@
+python {
+    docsDir = project.file('docs').path
+    testDir = project.file('test').path
+    srcDir = project.file('src').path
+    setupCfg = project.file('src').path
+    pinnedFile = project.file('pinned.txt') 
+    pythonEnvironment = [:]
+    pipConfig = [:]
+
+    details {
+        virtualEnvPrompt = "(${project.name})"
+        activateLink = project.file("activate")
+        pythonVersion = '3.7'
+        systemPythonInterpreter = file("/usr/local/bin/python3.7")
+    }
+}
+
+repositories {
+    pyGradlePyPi()
+}
