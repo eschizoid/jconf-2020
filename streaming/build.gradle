@@ -1,0 +1,32 @@
+repositories {
+    pyGradlePyPi()
+}
+
+tasks.flake8.enabled = false
+tasks.packageDocs.enabled = false
+tasks.pytest.enabled = false
+
+python {
+    docsDir = project.file('docs').path
+    testDir = project.file('test').path
+    srcDir = project.file('src').path
+    setupCfg = project.file('src').path
+    pinnedFile = project.file('pinned.txt') 
+    pythonEnvironment = [:]
+    pipConfig = [:]
+
+    details {
+        virtualEnvPrompt = "(${project.name})"
+        activateLink = project.file("activate")
+        pythonVersion = '3.7'
+        systemPythonInterpreter = getPythonBinary()
+    }
+}
+
+def getPythonBinary() {
+    if (System.env['PYTHON_BIN'] != null) {
+        file("${System.getenv('PYTHON_BIN')}")
+    } else {
+        file('/usr/local/bin/python3')
+    }
+}

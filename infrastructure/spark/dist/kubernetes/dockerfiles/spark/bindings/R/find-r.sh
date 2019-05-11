@@ -1,3 +1,5 @@
+#!/bin/bash
+
 #
 # Licensed to the Apache Software Foundation (ASF) under one or more
 # contributor license agreements.  See the NOTICE file distributed with
@@ -15,16 +17,18 @@
 # limitations under the License.
 #
 
-# ARG base_img
-# FROM $base_img
-FROM docker.io/eschizoid/spark:base
-WORKDIR /
-RUN mkdir /opt/spark/R
-
-RUN apk add --no-cache R R-dev
-
-COPY . /opt/spark/R/
-ENV R_HOME /usr/lib/R
-
-WORKDIR /opt/spark/work-dir
-ENTRYPOINT [ "/opt/entrypoint.sh" ]
+if [ -z "$R_SCRIPT_PATH" ]
+then
+  if [ ! -z "$R_HOME" ]
+  then
+    R_SCRIPT_PATH="$R_HOME/bin"
+  else
+    # if system wide R_HOME is not found, then exit
+    if [ ! `command -v R` ]; then
+      echo "Cannot find 'R_HOME'. Please specify 'R_HOME' or make sure R is properly installed."
+      exit 1
+    fi
+    R_SCRIPT_PATH="$(dirname $(which R))"
+  fi
+  echo "Using R_SCRIPT_PATH = ${R_SCRIPT_PATH}"
+fi

@@ -14,17 +14,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+library(SparkR)
+library(sparkPackageTest)
 
-# ARG base_img
-# FROM $base_img
-FROM docker.io/eschizoid/spark:base
-WORKDIR /
-RUN mkdir /opt/spark/R
+sparkR.session(master = "local[1]")
 
-RUN apk add --no-cache R R-dev
+run1 <- myfunc(5L)
 
-COPY . /opt/spark/R/
-ENV R_HOME /usr/lib/R
+run2 <- myfunc(-4L)
 
-WORKDIR /opt/spark/work-dir
-ENTRYPOINT [ "/opt/entrypoint.sh" ]
+sparkR.session.stop()
+
+if (run1 != 6) quit(save = "no", status = 1)
+
+if (run2 != -3) quit(save = "no", status = 1)

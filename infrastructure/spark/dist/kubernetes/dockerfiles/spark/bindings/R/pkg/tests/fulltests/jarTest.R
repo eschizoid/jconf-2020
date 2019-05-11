@@ -14,17 +14,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+library(SparkR)
 
-# ARG base_img
-# FROM $base_img
-FROM docker.io/eschizoid/spark:base
-WORKDIR /
-RUN mkdir /opt/spark/R
+sc <- sparkR.session(master = "local[1]")
 
-RUN apk add --no-cache R R-dev
+helloTest <- SparkR:::callJStatic("sparkrtest.DummyClass",
+                                  "helloWorld",
+                                  "Dave")
+stopifnot(identical(helloTest, "Hello Dave"))
 
-COPY . /opt/spark/R/
-ENV R_HOME /usr/lib/R
+basicFunction <- SparkR:::callJStatic("sparkrtest.DummyClass",
+                                      "addStuff",
+                                      2L,
+                                      2L)
+stopifnot(basicFunction == 4L)
 
-WORKDIR /opt/spark/work-dir
-ENTRYPOINT [ "/opt/entrypoint.sh" ]
+sparkR.session.stop()
