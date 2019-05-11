@@ -15,16 +15,13 @@
 # limitations under the License.
 #
 
-# ARG base_img
-# FROM $base_img
-FROM docker.io/eschizoid/spark:base
-WORKDIR /
-RUN mkdir /opt/spark/R
+all: sharelib
 
-RUN apk add --no-cache R R-dev
+sharelib: string_hash_code.c
+	R CMD SHLIB -o SparkR.so string_hash_code.c
 
-COPY . /opt/spark/R/
-ENV R_HOME /usr/lib/R
-
-WORKDIR /opt/spark/work-dir
-ENTRYPOINT [ "/opt/entrypoint.sh" ]
+clean:
+	rm -f *.o
+	rm -f *.so
+       
+.PHONY: all clean

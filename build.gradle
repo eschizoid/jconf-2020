@@ -1,0 +1,41 @@
+plugins {
+    id 'idea'
+    id 'cz.alenkacz.gradle.scalafmt' version '1.8.0' apply false
+    id 'com.linkedin.python' version '0.8.11' apply false
+    id 'com.github.arekbee.gradle-R-plugin' version '0.12' apply false
+    id 'com.github.johnrengelman.shadow' version '5.0.0' apply false
+    id 'com.moowork.node' version '1.2.0' apply false
+}
+
+allprojects {
+    repositories {
+        jcenter()
+        maven { url 'http://dl.bintray.com/spark-packages/maven' }
+        maven { url 'http://repo.artima.com/releases' }
+    }
+}
+
+ext {
+    hadoopAws = '2.7.3'
+    scalaVersion = '2.12.8'
+    sparkDariaVersion = '0.31.0-s_2.12'
+    sparkVersion = '2.4.3'
+}
+
+subprojects {
+    if (name.startsWith('streaming')) {
+        apply plugin: 'com.linkedin.python'
+    }
+    if (name.startsWith('transformation')) {
+        apply plugin: 'com.github.johnrengelman.shadow'
+        apply plugin: 'cz.alenkacz.gradle.scalafmt'
+        apply plugin: 'java'
+        apply plugin: 'scala'
+    }
+    if (name.startsWith('aggregation')) {
+        apply plugin: 'com.github.arekbee.gradle-R-plugin'
+    }
+    if (name.startsWith('visualization')) {
+        apply plugin: 'com.moowork.node'
+    }
+}

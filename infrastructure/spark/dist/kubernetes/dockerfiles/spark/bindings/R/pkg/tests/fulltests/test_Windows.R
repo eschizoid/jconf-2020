@@ -15,16 +15,14 @@
 # limitations under the License.
 #
 
-# ARG base_img
-# FROM $base_img
-FROM docker.io/eschizoid/spark:base
-WORKDIR /
-RUN mkdir /opt/spark/R
+context("Windows-specific tests")
 
-RUN apk add --no-cache R R-dev
+test_that("sparkJars tag in SparkContext", {
+  if (!is_windows()) {
+    skip("This test is only for Windows, skipped")
+  }
 
-COPY . /opt/spark/R/
-ENV R_HOME /usr/lib/R
-
-WORKDIR /opt/spark/work-dir
-ENTRYPOINT [ "/opt/entrypoint.sh" ]
+  testOutput <- launchScript("ECHO", "a/b/c", wait = TRUE)
+  abcPath <- testOutput[1]
+  expect_equal(abcPath, "a\\b\\c")
+})

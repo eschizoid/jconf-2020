@@ -1,6 +1,9 @@
+## Infrastructure
+
 ### Installing dependencies
 ```bash
-$ brew install minikube kubectl
+$ brew cask install minikube 
+$ brew install kubectl
 ```
 
 ### Starting `minikube`
@@ -20,9 +23,8 @@ $ minikuke dashboard
 
 ### Building `docker` images
 ```bash
-$ docker build -t spark:base -f dist/kubernetes/dockerfiles/spark/Dockerfile .
-$ docker build -t spark:python -f dist/kubernetes/dockerfiles/spark/bindings/python/Dockerfile .
-$ docker build -t spark:R -f dist/kubernetes/dockerfiles/spark/bindings/R/Dockerfile .
+$ cd spark
+$ ./build_dockerf_images.sh
 ```
 
 ### Permissions for spark jobs

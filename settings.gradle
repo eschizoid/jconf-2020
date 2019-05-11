@@ -1,0 +1,6 @@
+rootProject.name = 'chicago-cloud-conference-2019'
+
+include 'streaming'
+include 'transformation'
+include 'aggregation'
+include 'visualization'

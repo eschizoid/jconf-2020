@@ -15,16 +15,22 @@
 # limitations under the License.
 #
 
-# ARG base_img
-# FROM $base_img
-FROM docker.io/eschizoid/spark:base
-WORKDIR /
-RUN mkdir /opt/spark/R
+context("JVM API")
 
-RUN apk add --no-cache R R-dev
+sparkSession <- sparkR.session(master = sparkRTestMaster, enableHiveSupport = FALSE)
 
-COPY . /opt/spark/R/
-ENV R_HOME /usr/lib/R
+test_that("Create and call methods on object", {
+  jarr <- sparkR.newJObject("java.util.ArrayList")
+  # Add an element to the array
+  sparkR.callJMethod(jarr, "add", 1L)
+  # Check if get returns the same element
+  expect_equal(sparkR.callJMethod(jarr, "get", 0L), 1L)
+})
 
-WORKDIR /opt/spark/work-dir
-ENTRYPOINT [ "/opt/entrypoint.sh" ]
+test_that("Call static methods", {
+  # Convert a boolean to a string
+  strTrue <- sparkR.callJStatic("java.lang.String", "valueOf", TRUE)
+  expect_equal(strTrue, "true")
+})
+
+sparkR.session.stop()

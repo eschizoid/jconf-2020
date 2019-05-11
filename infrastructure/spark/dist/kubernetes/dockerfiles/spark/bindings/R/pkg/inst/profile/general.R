@@ -15,16 +15,9 @@
 # limitations under the License.
 #
 
-# ARG base_img
-# FROM $base_img
-FROM docker.io/eschizoid/spark:base
-WORKDIR /
-RUN mkdir /opt/spark/R
-
-RUN apk add --no-cache R R-dev
-
-COPY . /opt/spark/R/
-ENV R_HOME /usr/lib/R
-
-WORKDIR /opt/spark/work-dir
-ENTRYPOINT [ "/opt/entrypoint.sh" ]
+.First <- function() {
+  packageDir <- Sys.getenv("SPARKR_PACKAGE_DIR")
+  dirs <- strsplit(packageDir, ",")[[1]]
+  .libPaths(c(dirs, .libPaths()))
+  Sys.setenv(NOAWT = 1)
+}
