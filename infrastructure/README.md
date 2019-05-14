@@ -1,6 +1,9 @@
+## Infrastructure
+
 ### Installing dependencies
 ```bash
-$ brew install minikube kubectl
+$ brew cask install minikube 
+$ brew install kubectl
 ```
 
 ### Starting `minikube`
