@@ -9,4 +9,4 @@ export ACCESS_SECRET=${ACCESS_SECRET}
 export TCP_IP=${TCP_IP}
 export TCP_PORT=${TCP_PORT}
 
-python3 ../python/twitter_producer.py
+python3 ./streaming/src/main/python/twitter_producer.py

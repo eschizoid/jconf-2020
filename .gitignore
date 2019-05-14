@@ -265,7 +265,7 @@ gradle-app.setting
 **/build/
 
 ### Spark ###
-/streaming/src/main/resources/checkpoint_chicago-cloud-conference/
-/streaming/src/main/resources/spark-warehouse
+/checkpoint_chicago-cloud-conference
+/spark-warehouse
 
 # End of https://www.gitignore.io/api/macos,scala,gradle,python,intellij+all
