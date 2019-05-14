@@ -10,20 +10,21 @@ $ brew install python3
 ```
 
 Make sure you set the following env variables:
+* `PYTHON_BIN`
 * `PYTHONPATH`
 * `SPARK_HOME`
 
 ### Building
 ```bash
-$ ./gradlew build
+$ ./streaming/bin/build.sh
 ```
 ### Running
 
 #### Consumer
 ```bash
-$ ./run_consumer.sh
+$ ./streaming/bin/run_consumer.sh
 ``` 
 #### Producer
 ```bash
-$ ./run_producer.sh
+$ ./streaming/bin/run_producer.sh
 ``` 

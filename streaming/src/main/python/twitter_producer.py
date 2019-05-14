@@ -11,8 +11,11 @@ class TwitterStreamer(TwythonStreamer):
         super(TwitterStreamer, self).__init__(*args, **kwargs)
 
     def on_success(self, data):
-        if data['lang'] == 'en':
-            self.send_tweets_to_spark(data)
+        try:
+            if data['lang'] == 'en':
+                self.send_tweets_to_spark(data)
+        except KeyError:
+            print("Key [lang] not found, continue processing")
 
     def on_error(self, status_code, data):
         print(status_code, data)
@@ -20,7 +23,7 @@ class TwitterStreamer(TwythonStreamer):
 
     def send_tweets_to_spark(self, tweet):
         print(tweet['id'])
-        data = str(tweet) + "\n"
+        data = str(tweet['text']) + "\n"
         self.tcp_connection.send(data.encode())
 
 
@@ -42,7 +45,7 @@ def main():
                              oauth_token=os.getenv('ACCESS_TOKEN'),
                              oauth_token_secret=os.getenv('ACCESS_SECRET'))
     # Start the stream
-    stream.statuses.filter(track='golang,java,python,scala,#golang,#java,#python,#scala')
+    stream.statuses.filter(track='trump,#trump')
     print('Connected... Starting streaming tweets.')
 
 
