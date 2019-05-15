@@ -148,5 +148,5 @@ setup(
     #        'hello_world = foo.hello:main',
     #    ],
     # },
-    install_requires=['requests', 'pyspark', 'psutil', 'twython', 'findspark']
+    install_requires=['requests', 'pyspark', 'psutil', 'twython']
 )
