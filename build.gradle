@@ -1,19 +1,31 @@
 plugins {
     id 'idea'
-    id 'scala'
+    id 'cz.alenkacz.gradle.scalafmt' version '1.8.0' apply false
     id 'com.linkedin.python' version '0.8.11' apply false
     id 'com.github.arekbee.gradle-R-plugin' version '0.12' apply false
+    id 'com.github.johnrengelman.shadow' version '5.0.0' apply false
 }
 
 allprojects {
     repositories {
         jcenter()
+        maven { url 'http://dl.bintray.com/spark-packages/maven' }
+        maven { url 'http://repo.artima.com/releases' }
     }
+}
+
+ext {
+    scalaVersion = '2.12.8'
+    sparkDariaVersion = '0.31.0-s_2.12'
+    sparkVersion = '2.4.3'
 }
 
 subprojects {
     if (name.startsWith('transformation')) {
         apply plugin: 'scala'
+        apply plugin: 'java'
+        apply plugin: 'com.github.johnrengelman.shadow'
+        apply plugin: 'cz.alenkacz.gradle.scalafmt'
     }
     if (name.startsWith('streaming')) {
         apply plugin: 'com.linkedin.python'
@@ -21,16 +33,4 @@ subprojects {
     if (name.startsWith('visualization')) {
         apply plugin: 'com.github.arekbee.gradle-R-plugin'
     }
-}
-
-dependencies {
-    // Use Scala 2.12 in our library project
-    implementation 'org.scala-lang:scala-library:2.12.8'
-
-    // Use Scalatest for testing our library
-    testImplementation 'junit:junit:4.12'
-    testImplementation 'org.scalatest:scalatest_2.12:3.0.5'
-
-    // Need scala-xml at test runtime
-    testRuntimeOnly 'org.scala-lang.modules:scala-xml_2.12:1.1.1'
 }

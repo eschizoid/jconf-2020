@@ -3,6 +3,8 @@
 ### Architecture
 
 ### Project Structure
+* #### [Infrastructure](infrastructure/README.md)
+
 * #### [Streaming](streaming/README.md)
 
 * #### [Transformation](transformation/README.md)

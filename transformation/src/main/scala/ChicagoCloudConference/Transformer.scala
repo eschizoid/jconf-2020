@@ -1,5 +1,3 @@
 package ChicagoCloudConference
 
-object Transformer {
-
-}
+object Transformer {}
