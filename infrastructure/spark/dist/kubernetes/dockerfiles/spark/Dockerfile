@@ -49,6 +49,7 @@ COPY examples /opt/spark/examples
 COPY ${k8s_tests} /opt/spark/tests
 COPY data /opt/spark/data
 ADD http://central.maven.org/maven2/io/minio/spark-select_2.11/2.1/spark-select_2.11-2.1.jar /opt/spark/jars/spark-select_2.11-2.1.jar
+ADD http://central.maven.org/maven2/com/amazonaws/aws-java-sdk/1.11.551/aws-java-sdk-1.11.551.jar /opt/spark/jars/aws-java-sdk-1.11.551.jar
 
 ENV SPARK_HOME /opt/spark
 
