@@ -1,5 +1,8 @@
 ## Streaming
 
+This project is pretty much a data generator that simulates a stream of data. Under the hood uses the Twitter Streaming
+API to fetch live tweets. Later using `spark straming` it takes care of persisting the live tweets into `S3`.
+
 ### Pre-requisites:
 * Python 3.7.x
 * Spark 2.4.x

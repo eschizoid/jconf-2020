@@ -9,6 +9,7 @@
 
 rootProject.name = 'chicago-cloud-conference-2019'
 
+//include 'spark-gradle-template'
 include 'streaming'
 include 'transformation'
 include 'visualization'

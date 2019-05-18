@@ -1,4 +1,10 @@
-def pythonBinary = """${System.getenv('PYTHON_BIN')}"""
+def getPythonBinary() {
+    if (System.env['PYTHON_BIN'] != null) {
+        return file("${System.getenv('PYTHON_BIN')}")
+    } else {
+        return file('/usr/local/bin/python3')
+    }
+}
 
 python {
     docsDir = project.file('docs').path
@@ -13,8 +19,11 @@ python {
         virtualEnvPrompt = "(${project.name})"
         activateLink = project.file("activate")
         pythonVersion = '3.7'
-        systemPythonInterpreter = file(pythonBinary)
+        systemPythonInterpreter = getPythonBinary()
     }
+}
+task printPyton() {
+    println(getPythonBinary())
 }
 
 repositories {
