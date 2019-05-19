@@ -29,12 +29,9 @@ def process_rdd(time, rdd):
             row_rdd = rdd.map(lambda w: Row(twitt=w))
             twitts_df = sql_context.createDataFrame(row_rdd)
             twitts_df.show()
-            twitts_df.write.csv(
-                "s3a://chicago-cloud-conference-2019/bronze/{}/{}".format(time_.strftime("%Y-%m-%d"),
-                                                                          reverse_current_time_millis()),
-                mode="append",
-                quote=''
-            )
+            bucket = f"""s3a://{os.getenv('BUCKET_NAME')}/bronze/{time_.strftime(
+                "%Y-%m-%d")}/{reverse_current_time_millis()}"""
+            twitts_df.write.csv(bucket=bucket, mode="append", quote='')
         except:
             print("Unexpected error: ", sys.exc_info()[0])
             raise
@@ -42,7 +39,7 @@ def process_rdd(time, rdd):
 
 def configure_spark_streaming_context():
     conf = SparkConf()
-    conf.setAppName("chicago-cloud-conference-2019")
+    conf.setAppName("chicago-cloud-conference-2019 - Streaming")
     sc = SparkContext(conf=conf)
     print("Spark driver version: " + sc.version)
     hadoop_conf = sc._jsc.hadoopConfiguration()
