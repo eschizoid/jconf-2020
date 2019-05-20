@@ -2,6 +2,7 @@ import os
 import socket
 import sys
 import unicodedata
+from argparse import ArgumentParser
 
 from twython import TwythonStreamer
 
@@ -16,8 +17,7 @@ class TwitterStreamer(TwythonStreamer):
 
     def on_success(self, data):
         try:
-            if data['lang'] == 'en':
-                self.send_tweets_to_spark(data)
+            self.send_tweets_to_spark(data)
         except KeyError as err:
             print("Error while parsing tweet: ", err)
         except:
@@ -40,15 +40,13 @@ class TwitterStreamer(TwythonStreamer):
     @staticmethod
     def get_tweet_text(tweet):
         if not tweet["truncated"]:
-            text = tweet["text"]
+            text = map(lambda t: t['text'], tweet)
         else:
-            text = tweet["extended_tweet"]["full_text"]
-        clean_text = unicodedata\
-            .normalize(u'NFKD', text)\
-            .encode('ascii', 'ignore')\
-            .decode('utf8')\
-            .replace("\n", " ")
-        print("{}:{}".format(tweet["id"], clean_text))
+            text = map(lambda t: t["extended_tweet"]["full_text"], tweet)
+        # lang = map(lambda t: t['lang'], tweet)
+        # country = map(lambda t: t['place']['country'] if t['place'] is not None else None, tweet)
+        clean_text = unicodedata.normalize(u'NFKD', text).encode('ascii', 'ignore').decode('utf8').replace("\n", " ")
+        print(f"""{tweet["id"]} : {clean_text}""")
         return clean_text
 
 
@@ -62,6 +60,9 @@ def start_socket_server():
 
 
 def main():
+    parser = ArgumentParser()
+    parser.add_argument("--track", "-t", help="a csv of keywords for filtering tweets")
+    args = parser.parse_args()
     tcp_connection = start_socket_server()
     # TODO inject these via k8s secrets
     stream = TwitterStreamer(tcp_connection,
@@ -69,7 +70,7 @@ def main():
                              app_secret=os.getenv('CONSUMER_SECRET'),
                              oauth_token=os.getenv('ACCESS_TOKEN'),
                              oauth_token_secret=os.getenv('ACCESS_SECRET'))
-    stream.statuses.filter(track='trump,#trump')
+    stream.statuses.filter(track=args.track)
     print('Connected... Starting streaming tweets.')
 
 

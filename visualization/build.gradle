@@ -1,0 +1,7 @@
+r {
+    src = './src/main/R/ChicagoCloudConference/visualizer.R'
+}
+
+rPackageBuild.dependsOn(rPackageDocument)
+rPackageBuild.dependsOn(rPackageCheck)
+rPackageBuild.dependsOn(rPackageTest)

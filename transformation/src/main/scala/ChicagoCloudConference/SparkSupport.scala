@@ -6,7 +6,7 @@ import org.apache.spark.sql.{DataFrameReader, SQLContext, SparkSession}
 
 trait SparkSupport {
   val spark: SparkSession = SparkSession
-    .builder()
+    .builder
     .appName("chicago-cloud-conference-2019 - Transformation")
     .master("local[*]")
     .config("option", "some-value")

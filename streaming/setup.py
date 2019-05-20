@@ -84,6 +84,7 @@ class install_egg_info(_install_egg_info):  # noqa
 
 
 class GradleDistribution(Distribution, object):
+
     PINNED_TXT = 'pinned.txt'
 
     excluded_platform_packages = {}
@@ -136,17 +137,16 @@ class GradleDistribution(Distribution, object):
         except IOError:
             raise StopIteration
 
-
 setup(
-    distclass=GradleDistribution,
-    package_dir={'': 'src'},
-    packages=find_packages('src'),
-    include_package_data=True,
+  distclass=GradleDistribution,
+  package_dir={'': 'src'},
+  packages=find_packages('src'),
+  include_package_data=True,
 
-    # entry_points={
-    #    'console_scripts': [
-    #        'hello_world = foo.hello:main',
-    #    ],
-    # },
-    install_requires=['requests', 'pyspark', 'psutil', 'twython']
+  # entry_points={
+  #     'console_scripts': [
+  #         'hello_world = foo.hello:main',
+  #     ],
+  # },
+  install_requires=['requests', 'pyspark', 'psutil', 'twython']
 )

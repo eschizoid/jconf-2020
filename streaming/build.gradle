@@ -14,6 +14,7 @@ python {
     pinnedFile = project.file('pinned.txt') 
     pythonEnvironment = [:]
     pipConfig = [:]
+    forceVersion('pypi', 'flake8', '3.2.1')
 
     details {
         virtualEnvPrompt = "(${project.name})"
@@ -21,9 +22,6 @@ python {
         pythonVersion = '3.7'
         systemPythonInterpreter = getPythonBinary()
     }
-}
-task printPyton() {
-    println(getPythonBinary())
 }
 
 repositories {
