@@ -23,13 +23,12 @@ ext {
 subprojects {
     if (name.startsWith('streaming')) {
         apply plugin: 'com.linkedin.python'
-        apply plugin: 'java'
     }
     if (name.startsWith('transformation')) {
-        apply plugin: 'scala'
-        apply plugin: 'java'
         apply plugin: 'com.github.johnrengelman.shadow'
         apply plugin: 'cz.alenkacz.gradle.scalafmt'
+        apply plugin: 'java'
+        apply plugin: 'scala'
     }
     if (name.startsWith('visualization')) {
         apply plugin: 'com.github.arekbee.gradle-R-plugin'

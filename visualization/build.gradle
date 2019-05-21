@@ -1,7 +1,12 @@
 r {
-    src = './src/main/R/ChicagoCloudConference/visualizer.R'
+    interpreter = getRInterpreter()
+    src = './visualization/src/main/R/ChicagoCloudConference/*'
 }
 
-rPackageBuild.dependsOn(rPackageDocument)
-rPackageBuild.dependsOn(rPackageCheck)
-rPackageBuild.dependsOn(rPackageTest)
+def getRInterpreter() {
+    if (System.env['R_BIN'] != null) {
+        "${System.getenv('R_BIN')}"
+    } else {
+        '/usr/local/bin/R'
+    }
+}
