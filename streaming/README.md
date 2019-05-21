@@ -29,5 +29,5 @@ $ ./streaming/bin/run_consumer.sh
 ``` 
 #### Producer
 ```bash
-$ ./streaming/bin/run_producer.sh
+$ ./streaming/bin/run_producer.sh --track "trump,#trump"
 ``` 
