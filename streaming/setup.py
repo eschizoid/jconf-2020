@@ -17,10 +17,10 @@
 from __future__ import print_function
 
 import os
-import platform
 import sys
-
 import pkg_resources
+import platform
+
 from setuptools import setup, find_packages, Command
 from setuptools.command.install_egg_info import install_egg_info as _install_egg_info
 from setuptools.dist import Distribution
@@ -148,5 +148,5 @@ setup(
   #         'hello_world = foo.hello:main',
   #     ],
   # },
-  install_requires=['requests', 'pyspark', 'psutil', 'twython']
+  install_requires=['pyspark', 'psutil', 'twython']
 )

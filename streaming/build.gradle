@@ -1,10 +1,10 @@
-def getPythonBinary() {
-    if (System.env['PYTHON_BIN'] != null) {
-        return file("${System.getenv('PYTHON_BIN')}")
-    } else {
-        return file('/usr/local/bin/python3')
-    }
+repositories {
+    pyGradlePyPi()
 }
+
+tasks.flake8.enabled = false
+tasks.packageDocs.enabled = false
+tasks.pytest.enabled = false
 
 python {
     docsDir = project.file('docs').path
@@ -14,7 +14,6 @@ python {
     pinnedFile = project.file('pinned.txt') 
     pythonEnvironment = [:]
     pipConfig = [:]
-    forceVersion('pypi', 'flake8', '3.2.1')
 
     details {
         virtualEnvPrompt = "(${project.name})"
@@ -24,6 +23,10 @@ python {
     }
 }
 
-repositories {
-    pyGradlePyPi()
+def getPythonBinary() {
+    if (System.env['PYTHON_BIN'] != null) {
+        file("${System.getenv('PYTHON_BIN')}")
+    } else {
+        file('/usr/local/bin/python3')
+    }
 }
