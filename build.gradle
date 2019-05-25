@@ -4,6 +4,7 @@ plugins {
     id 'com.linkedin.python' version '0.8.11' apply false
     id 'com.github.arekbee.gradle-R-plugin' version '0.12' apply false
     id 'com.github.johnrengelman.shadow' version '5.0.0' apply false
+    id 'com.moowork.node' version '1.2.0' apply false
 }
 
 allprojects {
@@ -15,6 +16,7 @@ allprojects {
 }
 
 ext {
+    hadoopAws = '2.7.3'
     scalaVersion = '2.12.8'
     sparkDariaVersion = '0.31.0-s_2.12'
     sparkVersion = '2.4.3'
@@ -30,7 +32,10 @@ subprojects {
         apply plugin: 'java'
         apply plugin: 'scala'
     }
-    if (name.startsWith('visualization')) {
+    if (name.startsWith('aggregation')) {
         apply plugin: 'com.github.arekbee.gradle-R-plugin'
+    }
+    if (name.startsWith('visualization')) {
+        apply plugin: 'com.moowork.node'
     }
 }

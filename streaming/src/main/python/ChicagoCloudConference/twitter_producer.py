@@ -48,7 +48,7 @@ class TwitterStreamer(TwythonStreamer):
         # lang = map(lambda t: t['lang'], tweet)
         # country = map(lambda t: t['place']['country'] if t['place'] is not None else None, tweet)
         clean_text = unicodedata.normalize(u'NFKD', text).encode('ascii', 'ignore').decode('utf8').replace("\n", " ")
-        #print(f"""{tweet["id"]} : {clean_text}""")
+        # print(f"""{tweet["id"]} : {clean_text}""")
         return clean_text
 
 

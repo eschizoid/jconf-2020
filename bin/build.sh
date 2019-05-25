@@ -14,4 +14,4 @@ else
     exit -1
 fi
 
-./gradlew build rPackageDest rPackageBuild
+./gradlew scalafmt build shadowJar rPackageDest rPackageBuild

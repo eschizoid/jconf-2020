@@ -23,7 +23,8 @@ $ minikuke dashboard
 
 ### Building `docker` images
 ```bash
-$ ./bin/build_dockerf_images.sh
+$ cd spark
+$ ./build_dockerf_images.sh
 ```
 
 ### Permissions for spark jobs

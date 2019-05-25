@@ -4,8 +4,8 @@ Once the data exists in columnar format, we can proceed to do more sophisticated
 D3 dashboard.
 
 ### Pre-requisites:
-* R 3.6.x
+* Node 12.3.0
 
 ```bash
-$ brew install R
+$ brew install node
 ```

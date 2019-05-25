@@ -1,12 +1,9 @@
-r {
-    interpreter = getRInterpreter()
-    src = './visualization/src/main/R/ChicagoCloudConference/*'
+node {
+    download = true
 }
 
-def getRInterpreter() {
-    if (System.env['R_BIN'] != null) {
-        "${System.getenv('R_BIN')}"
-    } else {
-        '/usr/local/bin/R'
-    }
+task helloWorld(type: NodeTask, dependsOn: 'npmInstall') {
+    script = file('src/main/node/ChicagoCloudConference')
 }
+
+task build(dependsOn: 'helloWorld') {}

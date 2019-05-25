@@ -269,3 +269,6 @@ gradle-app.setting
 /spark-warehouse
 
 # End of https://www.gitignore.io/api/macos,scala,gradle,python,intellij+all
+
+### Node ###
+*/node_modules/*

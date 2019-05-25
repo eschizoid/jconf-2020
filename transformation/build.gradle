@@ -6,16 +6,29 @@ version '1.0-SNAPSHOT'
 
 dependencies {
 
-    implementation "mrpowers:spark-daria:$sparkDariaVersion"
-    implementation "org.apache.spark:spark-core_2.12:$sparkVersion"
-    implementation "org.apache.spark:spark-mllib_2.12:$sparkVersion"
-    implementation "org.apache.spark:spark-sql_2.12:$sparkVersion"
-    implementation "org.apache.spark:spark-streaming_2.12:$sparkVersion"
-    implementation "org.scala-lang:scala-library:$scalaVersion"
-    implementation "org.scala-lang:scala-reflect:$scalaVersion"
-    implementation "org.scala-lang:scala-compiler:$scalaVersion"
+    compileOnly "org.scala-lang:scala-library:$scalaVersion",
+            "org.scala-lang:scala-reflect:$scalaVersion",
+            "org.scala-lang:scala-compiler:$scalaVersion"
+
+    implementation "org.apache.hadoop:hadoop-aws:$hadoopAws",
+            "mrpowers:spark-daria:$sparkDariaVersion",
+            "org.apache.spark:spark-sql_2.12:$sparkVersion",
+            "org.apache.spark:spark-core_2.12:$sparkVersion",
+            "org.apache.spark:spark-streaming_2.12:$sparkVersion"
 
     testImplementation 'org.scalatest:scalatest_2.12:3.0.5'
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'ChicagoCloudConference.Main'
+        )
+    }
+}
+
+shadowJar {
+    zip64 true
 }
 
 scalafmt {

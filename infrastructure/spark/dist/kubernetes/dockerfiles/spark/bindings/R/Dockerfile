@@ -19,11 +19,11 @@
 # FROM $base_img
 FROM docker.io/eschizoid/spark:base
 WORKDIR /
-RUN mkdir ${SPARK_HOME}/R
+RUN mkdir /opt/spark/R
 
 RUN apk add --no-cache R R-dev
 
-COPY R ${SPARK_HOME}/R
+COPY . /opt/spark/R/
 ENV R_HOME /usr/lib/R
 
 WORKDIR /opt/spark/work-dir

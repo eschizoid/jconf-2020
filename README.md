@@ -9,5 +9,7 @@
 
 * #### [Transformation](transformation/README.md)
 
+* #### [Aggregation](visualization/README.md)
+
 * #### [Visualization](visualization/README.md)
 

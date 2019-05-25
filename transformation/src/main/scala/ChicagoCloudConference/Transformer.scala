@@ -17,14 +17,14 @@ class Transformer extends SparkSupport {
   private val streamingLakeDF: DataFrame = spark.readStream
     .format("parquet")
     .schema(schema)
-    .load(s"s3a://${sys.env("BUCKET_NAME")}/bronze")
+    .load(s"s3a://chicago-cloud-conference-2019/bronze")
 
   private val etl = EtlDefinition(
     sourceDF = streamingLakeDF,
     transform = filterMinors(),
     write = parquetStreamWriter(
-      s"s3a://${sys.env("BUCKET_NAME")}/silver/tweets",
-      s"s3a://${sys.env("BUCKET_NAME")}/silver/checkpoints/tweets"
+      s"s3a://chicago-cloud-conference-2019/silver/tweets",
+      s"s3a://chicago-cloud-conference-2019/silver/checkpoints/tweets"
     )
   )
 
