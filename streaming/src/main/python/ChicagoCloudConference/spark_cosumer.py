@@ -1,9 +1,9 @@
 import os
-import sys
 import time as time_
 
 from pyspark import SparkConf, SparkContext
-from pyspark.sql import Row, SQLContext
+from pyspark.sql import SQLContext
+from pyspark.sql.types import StringType
 from pyspark.streaming import StreamingContext
 
 
@@ -24,17 +24,11 @@ def process_rdd(time, rdd):
         return
     else:
         print("----------- %s -----------" % str(time))
-        try:
-            sql_context = get_sql_context_instance(rdd.context)
-            row_rdd = rdd.map(lambda w: Row(twitt=w))
-            twitts_df = sql_context.createDataFrame(row_rdd)
-            twitts_df.show()
-            bucket = f"""s3a://{os.getenv('BUCKET_NAME')}/bronze/{time_.strftime(
-                "%Y-%m-%d")}/{reverse_current_time_millis()}"""
-            twitts_df.write.csv(bucket=bucket, mode="append", quote='')
-        except:
-            print("Unexpected error: ", sys.exc_info()[0])
-            raise
+        sql_context = get_sql_context_instance(rdd.context)
+        twitts_df = sql_context.createDataFrame(rdd, StringType())
+        twitts_df.write.parquet(
+            f"""s3a://chicago-cloud-conference-2019/bronze/"{time_.strftime(
+                "%Y-%m-%d")}"/{reverse_current_time_millis()}""")
 
 
 def configure_spark_streaming_context():
@@ -43,7 +37,7 @@ def configure_spark_streaming_context():
     sc = SparkContext(conf=conf)
     print("Spark driver version: " + sc.version)
     hadoop_conf = sc._jsc.hadoopConfiguration()
-    hadoop_conf.set("fs.s3.impl", "org.apache.hadoop.fs.s3native.NativeS3FileSystem")
+    hadoop_conf.set("fs.s3.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
     hadoop_conf.set("fs.s3.awsAccessKeyId", os.getenv("AWS_ACCESS_KEY_ID"))
     hadoop_conf.set("fs.s3.awsSecretAccessKey", os.getenv("AWS_ACCESS_KEY_ID"))
     sc.setLogLevel("ERROR")
