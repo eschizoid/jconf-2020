@@ -3,17 +3,17 @@ set -a
 source .env
 set +a
 
-while getopts ":track:" opt; do
-  case ${opt} in
-    track )
-      python3 ./streaming/src/main/python/ChicagoCloudConference/twitter_producer.py --track ${OPTARG}
-      ;;
-    \? )
-      echo "Invalid option: $OPTARG" 1>&2
-      ;;
-    : )
-      echo "Invalid option: $OPTARG requires an argument" 1>&2
-      ;;
-  esac
+usage() { echo "Usage: $0 [-t]" 1>&2; exit 1; }
+
+while getopts "t:" o; do
+    case "${o}" in
+        t)
+            track=${OPTARG}
+            python3 ./streaming/src/main/python/ChicagoCloudConference/twitter_producer.py --track ${track}
+            ;;
+        *)
+            usage
+            ;;
+    esac
 done
-shift $((OPTIND -1))
+shift $((OPTIND-1))

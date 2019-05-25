@@ -14,4 +14,4 @@ else
     exit -1
 fi
 
-./gradlew clean build rPackageDest rPackageBuild
+./gradlew build rPackageDest rPackageBuild

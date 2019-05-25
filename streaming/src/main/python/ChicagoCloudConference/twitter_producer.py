@@ -10,6 +10,7 @@ from twython import TwythonStreamer
 class TwitterStreamer(TwythonStreamer):
     tweets = []
     number_of_batches = 1
+    batch_size = 500
 
     def __init__(self, tcp_connection, *args, **kwargs):
         self.tcp_connection = tcp_connection
@@ -30,23 +31,24 @@ class TwitterStreamer(TwythonStreamer):
 
     def send_tweets_to_spark(self, tweet):
         self.tweets.append(self.get_tweet_text(tweet))
-        if len(self.tweets) == 100:
-            data = "\n".join(map(str, self.tweets))
+        if len(self.tweets) == self.batch_size:
+            data = "\n".join(self.tweets)
+            print(data)
             self.tcp_connection.send(data.encode(encoding='utf-8'))
-            print("Tweets sent to spark: ", self.number_of_batches * 100)
+            print("Tweets sent to spark: ", self.number_of_batches * self.batch_size)
             self.number_of_batches += 1
             self.tweets = []
 
     @staticmethod
     def get_tweet_text(tweet):
         if not tweet["truncated"]:
-            text = map(lambda t: t['text'], tweet)
+            text = str(tweet['text'])
         else:
-            text = map(lambda t: t["extended_tweet"]["full_text"], tweet)
+            text = str(tweet["extended_tweet"]["full_text"])
         # lang = map(lambda t: t['lang'], tweet)
         # country = map(lambda t: t['place']['country'] if t['place'] is not None else None, tweet)
         clean_text = unicodedata.normalize(u'NFKD', text).encode('ascii', 'ignore').decode('utf8').replace("\n", " ")
-        print(f"""{tweet["id"]} : {clean_text}""")
+        #print(f"""{tweet["id"]} : {clean_text}""")
         return clean_text
 
 
@@ -61,7 +63,7 @@ def start_socket_server():
 
 def main():
     parser = ArgumentParser()
-    parser.add_argument("--track", "-t", help="a csv of keywords for filtering tweets")
+    parser.add_argument("--track", "-t", help="a csv of keywords used when filtering tweets")
     args = parser.parse_args()
     tcp_connection = start_socket_server()
     # TODO inject these via k8s secrets

@@ -19,15 +19,15 @@ Make sure you set the following env variables:
 
 ### Building
 ```bash
-$ ./streaming/bin/build.sh
+$ ./bin/build.sh
 ```
 ### Running
 
 #### Consumer
 ```bash
-$ ./streaming/bin/run_consumer.sh
+$ ./bin/run_consumer.sh
 ``` 
 #### Producer
 ```bash
-$ ./streaming/bin/run_producer.sh --track "trump,#trump"
+$ ./bin/run_producer.sh --track "trump,#trump"
 ``` 
