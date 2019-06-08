@@ -56,7 +56,7 @@ def start_socket_server():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.bind((os.getenv('TCP_IP'), int(os.getenv('TCP_PORT'))))
     s.listen(50)
-    print('Waiting for TCP connection...')
+    print(f'Waiting for TCP connection at {os.getenv("TCP_IP")}:{int(os.getenv("TCP_PORT"))} ...')
     tcp_connection, addr = s.accept()
     return tcp_connection
 
