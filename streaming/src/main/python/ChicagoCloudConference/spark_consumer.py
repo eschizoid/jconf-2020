@@ -26,9 +26,9 @@ def process_rdd(time, rdd):
         print("----------- %s -----------" % str(time))
         sql_context = get_sql_context_instance(rdd.context)
         twitts_df = sql_context.createDataFrame(rdd, StringType())
-        twitts_df.write.parquet(
-            f"""s3a://chicago-cloud-conference-2019/bronze/"{time_.strftime(
-                "%Y-%m-%d")}"/{reverse_current_time_millis()}""")
+        twitts_df.write.json(
+            f"""s3a://chicago-cloud-conference-2019/bronze/{time_.strftime(
+                "%Y-%m-%d")}/{reverse_current_time_millis()}""")
 
 
 def configure_spark_streaming_context():
@@ -39,7 +39,7 @@ def configure_spark_streaming_context():
     hadoop_conf = sc._jsc.hadoopConfiguration()
     hadoop_conf.set("fs.s3.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
     hadoop_conf.set("fs.s3.awsAccessKeyId", os.getenv("AWS_ACCESS_KEY_ID"))
-    hadoop_conf.set("fs.s3.awsSecretAccessKey", os.getenv("AWS_ACCESS_KEY_ID"))
+    hadoop_conf.set("fs.s3.awsSecretAccessKey", os.getenv("AWS_SECRET_ACCESS_KEY"))
     sc.setLogLevel("ERROR")
     ssc = StreamingContext(sc, 1)
     ssc.checkpoint("checkpoint_chicago-cloud-conference")
