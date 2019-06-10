@@ -3,7 +3,7 @@ r {
     src = './aggregation/src/main/R/ChicagoCloudConference/*'
 }
 
-def getRInterpreter() {
+static def getRInterpreter() {
     if (System.env['R_BIN'] != null) {
         "${System.getenv('R_BIN')}"
     } else {

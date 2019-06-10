@@ -5,5 +5,5 @@ object Main extends App {
   val version     = transformer.spark.version
   println("SPARK VERSION = " + version)
   transformer.start()
-  transformer.close()
+  //transformer.close()
 }

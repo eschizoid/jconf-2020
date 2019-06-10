@@ -1,6 +1,6 @@
 const figlet = require('figlet');
 
-var out = figlet.textSync('Hello World!', {
+let out = figlet.textSync('Hello World!', {
     font: 'Standard'
 });
 

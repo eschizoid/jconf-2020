@@ -2,34 +2,34 @@ package ChicagoCloudConference
 
 import com.github.mrpowers.spark.daria.sql.EtlDefinition
 import org.apache.spark.sql.DataFrame
-import org.apache.spark.sql.functions.col
 import org.apache.spark.sql.streaming.Trigger
-import org.apache.spark.sql.types.{IntegerType, StringType, StructField, StructType}
+import org.apache.spark.sql.types.{StringType, StructField, StructType}
 
 class Transformer extends SparkSupport {
-  private val schema = StructType(
-    List(
-      StructField("tweet", StringType, nullable = true),
-      StructField("timestamp", IntegerType, nullable = true)
-    )
-  )
+  private val schema = StructType(Array(StructField("value", StringType, nullable = true)))
 
-  private val streamingLakeDF: DataFrame = spark.readStream
-    .format("parquet")
+  private val streamingLakeDF: DataFrame = sqlContext.readStream
     .schema(schema)
-    .load(s"s3a://chicago-cloud-conference-2019/bronze")
+    .option("latestFirst", "true")
+    .option("maxFilesPerTrigger", "20")
+    .json(s"s3a://chicago-cloud-conference-2019/bronze/2019-06-10/*/")
 
   private val etl = EtlDefinition(
     sourceDF = streamingLakeDF,
-    transform = filterMinors(),
+    transform = parquetTransformer(),
     write = parquetStreamWriter(
       s"s3a://chicago-cloud-conference-2019/silver/tweets",
       s"s3a://chicago-cloud-conference-2019/silver/checkpoints/tweets"
     )
   )
 
-  private def filterMinors()(df: DataFrame): DataFrame = {
-    df.filter(col("timestamp") < System.currentTimeMillis())
+  private def parquetTransformer()(df: DataFrame): DataFrame = {
+    //TODO We need to extract a couple of interesting fields from the raw tweet:
+    // 1. time
+    // 2. location
+    // 3. cleanse text
+    // 4. hastags
+    df
   }
 
   private def parquetStreamWriter(dataPath: String, checkpointPath: String)(df: DataFrame): Unit = {
