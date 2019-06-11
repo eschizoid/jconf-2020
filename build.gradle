@@ -25,6 +25,7 @@ ext {
 subprojects {
     if (name.startsWith('streaming')) {
         apply plugin: 'com.linkedin.python'
+        apply plugin: 'com.linkedin.python-sdist'
     }
     if (name.startsWith('transformation')) {
         apply plugin: 'com.github.johnrengelman.shadow'

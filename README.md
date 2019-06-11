@@ -13,3 +13,14 @@
 
 * #### [Visualization](visualization/README.md)
 
+### Required Runtime's
+
+* #### `Java 8`
+
+* #### `Scala 2.11` / `Scala 2.12`
+
+* #### `Python 3.7.x`
+
+* #### `R 3.6.x`
+
+* #### `Node 12.4.x`

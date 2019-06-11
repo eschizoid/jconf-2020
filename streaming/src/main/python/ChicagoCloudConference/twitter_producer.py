@@ -1,3 +1,4 @@
+import json
 import os
 import socket
 import sys
@@ -30,7 +31,7 @@ class TwitterStreamer(TwythonStreamer):
         self.disconnect()
 
     def send_tweets_to_spark(self, tweet):
-        self.tweets.append(self.get_tweet_text(tweet))
+        self.tweets.append(json.dumps(tweet))
         if len(self.tweets) == self.batch_size:
             data = "\n".join(self.tweets)
             print(data)

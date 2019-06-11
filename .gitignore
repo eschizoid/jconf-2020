@@ -147,6 +147,10 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+activate
+pinned.txt
+repo
+pivy-importer-0.9.9-all.jar
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
