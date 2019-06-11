@@ -7,5 +7,6 @@ D3 dashboard.
 * Node 12.3.0
 
 ```bash
+$ brew install npm
 $ brew install node
 ```

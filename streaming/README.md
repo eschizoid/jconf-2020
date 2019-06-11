@@ -8,7 +8,6 @@ API to fetch live tweets. Later using `spark streaming` it takes care of persist
 * Spark 2.4.x
 
 ```bash
-$ brew install spark
 $ brew install apache-spark
 $ brew install python3
 ```

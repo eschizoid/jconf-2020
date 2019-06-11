@@ -1,5 +1,12 @@
 repositories {
     pyGradlePyPi()
+    ivy {
+        url "/tmp/repo"
+        layout 'pattern', {
+            artifact '[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]'
+            ivy '[organisation]/[module]/[revision]/[module]-[revision].ivy'
+        }
+    }
 }
 
 tasks.flake8.enabled = false
@@ -22,6 +29,16 @@ python {
         systemPythonInterpreter = getPythonBinary()
     }
 }
+
+dependencies {
+    python 'pypi:twython:3.7.0'
+    python 'pypi:pyspark:2.4.3'
+}
+
+task downloadPythonDependecies(type: Exec) {
+    commandLine '.././bin/download_python_dependencies.sh'
+}
+
 
 def getPythonBinary() {
     if (System.env['PYTHON_BIN'] != null) {
