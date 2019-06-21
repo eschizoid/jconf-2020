@@ -17,9 +17,9 @@
 
 # ARG base_img
 # FROM $base_img
-FROM docker.io/eschizoid/spark:base
+FROM docker-snapshot.artifactory.uptake.com/uptake/mgonzalez/spark:latest
 WORKDIR /
-RUN mkdir /opt/spark/python
+RUN mkdir ${SPARK_HOME}/python
 # TODO: Investigate running both pip and pip3 via virtualenvs
 RUN apk add --no-cache python && \
     apk add --no-cache python3 && \
@@ -33,8 +33,8 @@ RUN apk add --no-cache python && \
     # Removed the .cache to save space
     rm -r /root/.cache
 
-COPY . /opt/spark/python/lib/
-ENV PYTHONPATH /opt/spark/python/lib/pyspark.zip:/opt/spark/python/lib/py4j-*.zip
+COPY python/lib ${SPARK_HOME}/python/lib
+ENV PYTHONPATH ${SPARK_HOME}/python/lib/pyspark.zip:${SPARK_HOME}/python/lib/py4j-*.zip
 
 WORKDIR /opt/spark/work-dir
 ENTRYPOINT [ "/opt/entrypoint.sh" ]
