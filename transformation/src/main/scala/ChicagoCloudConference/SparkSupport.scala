@@ -8,7 +8,7 @@ trait SparkSupport {
     .config("spark.hadoop.fs.defaultFS", "s3")
     .config("spark.sql.streaming.checkpointLocation", "checkpoint_transformation_chicago-cloud-conference")
     .appName("chicago-cloud-conference-2019 - Transformation")
-    .master(s"local[${sys.env("SPARK_CORES")}]")
+    .master(sys.env("SPARK_MASTER"))
     .getOrCreate()
 
   val sc: SparkContext       = spark.sparkContext

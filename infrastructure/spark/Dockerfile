@@ -2,6 +2,7 @@ FROM openjdk:8-alpine
 
 ARG spark_dist=dist
 ARG spark_bin=${spark_dist}/bin
+ARG spark_conf=${spark_dist}/conf
 ARG spark_examples=${spark_dist}/examples
 ARG spark_data=${spark_dist}/data
 ARG spark_jars=${spark_dist}/jars
@@ -32,11 +33,12 @@ RUN set -ex && \
 
 COPY ${spark_jars} /opt/spark/jars
 COPY ${spark_bin} /opt/spark/bin
-COPY ${spark_sbin} /opt/spark/sbin
-COPY ${img_path}/spark/entrypoint.sh /opt/
-COPY ${spark_examples} /opt/spark/examples
-COPY ${k8s_tests} /opt/spark/tests
+COPY ${spark_conf} /opt/spark/conf
 COPY ${spark_data} /opt/spark/data
+COPY ${spark_examples} /opt/spark/examples
+COPY ${spark_sbin} /opt/spark/sbin
+COPY ${k8s_tests} /opt/spark/tests
+COPY ${img_path}/spark/entrypoint.sh /opt/
 
 ADD https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk/1.7.4/aws-java-sdk-1.7.4.jar /opt/spark/jars/aws-java-sdk-1.7.4.jar
 ADD https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/2.7.3/hadoop-aws-2.7.3.jar /opt/spark/jars/hadoop-aws-2.7.3.jar
