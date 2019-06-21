@@ -37,7 +37,7 @@ def process_rdd(time: time_, rdd: RDD) -> None:
 def configure_spark_streaming_context() -> StreamingContext:
     conf = SparkConf()
     conf.setAppName("chicago-cloud-conference-2019 - Streaming")
-    conf.setMaster(f"""local[{os.getenv("SPARK_CORES")}]""")
+    conf.setMaster(os.getenv("SPARK_MASTER"))
     sc = SparkContext(conf=conf)
     logging.info("Spark driver version: " + sc.version)
     hadoop_conf = sc._jsc.hadoopConfiguration()
