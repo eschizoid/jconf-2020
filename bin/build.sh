@@ -38,11 +38,11 @@ else
 fi
 
 ./gradlew \
-    clean \
     scalafmtAll \
     generateSetupPy \
     downloadPythonDependecies \
     build \
+    test \
     shadowJar \
     rPackageDest \
     rPackageBuild
