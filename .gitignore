@@ -269,8 +269,11 @@ gradle-app.setting
 **/build/
 
 ### Spark ###
-/checkpoint_chicago-cloud-conference
+/checkpoint_streaming_chicago-cloud-conference
+/checkpoint_transformation_chicago-cloud-conference
+/checkpoint_aggregation_chicago-cloud-conference
 /spark-warehouse
+*metastore_db*
 
 # End of https://www.gitignore.io/api/macos,scala,gradle,python,intellij+all
 

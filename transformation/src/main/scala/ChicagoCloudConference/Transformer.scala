@@ -1,43 +1,45 @@
 package ChicagoCloudConference
 
+import java.time.LocalDate
+
 import com.github.mrpowers.spark.daria.sql.EtlDefinition
 import org.apache.spark.sql.DataFrame
-import org.apache.spark.sql.streaming.Trigger
+import org.apache.spark.sql.functions.get_json_object
 import org.apache.spark.sql.types.{StringType, StructField, StructType}
 
 class Transformer extends SparkSupport {
   private val schema = StructType(Array(StructField("value", StringType, nullable = true)))
 
-  private val streamingLakeDF: DataFrame = sqlContext.readStream
+  private val streamingLakeDF: DataFrame = spark.read
     .schema(schema)
-    .option("latestFirst", "true")
-    .option("maxFilesPerTrigger", "20")
-    .json(s"s3a://chicago-cloud-conference-2019/bronze/2019-06-10/*/")
+    .json(s"s3a://chicago-cloud-conference-2019/bronze/*/*/part-*.json")
 
   private val etl = EtlDefinition(
     sourceDF = streamingLakeDF,
     transform = parquetTransformer(),
     write = parquetStreamWriter(
-      s"s3a://chicago-cloud-conference-2019/silver/tweets",
-      s"s3a://chicago-cloud-conference-2019/silver/checkpoints/tweets"
+      s"s3a://chicago-cloud-conference-2019/silver/${LocalDate.now.toString}",
+      s"s3a://chicago-cloud-conference-2019/silver"
     )
   )
 
+  import sqlContext.implicits._
   private def parquetTransformer()(df: DataFrame): DataFrame = {
-    //TODO We need to extract a couple of interesting fields from the raw tweet:
-    // 1. time
-    // 2. location
-    // 3. cleanse text
-    // 4. hastags
-    df
+    df.select(
+        get_json_object($"value", "$.created_at").alias("created_at"),
+        get_json_object($"value", "$.text").alias("text"),
+        get_json_object($"value", "$.user").alias("user")
+      )
+      .toDF
+      .select($"created_at", $"text", $"user")
+      .withColumn("location", get_json_object($"user", "$.location"))
+      .toDF
+      .select($"created_at", $"text", $"location")
   }
 
   private def parquetStreamWriter(dataPath: String, checkpointPath: String)(df: DataFrame): Unit = {
-    df.writeStream
-      .trigger(Trigger.Once)
-      .format("parquet")
-      .option("checkpointLocation", checkpointPath)
-      .start(dataPath)
+    df.write
+      .parquet(dataPath)
   }
 
   def start() {
