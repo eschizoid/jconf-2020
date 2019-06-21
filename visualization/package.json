@@ -2,6 +2,7 @@
   "name": "example",
   "version": "0.0.0",
   "dependencies": {
-    "figlet": "^1.2.0"
+    "aws-sdk": "^2.476.0",
+    "dotenv": "^8.0.0"
   }
 }
