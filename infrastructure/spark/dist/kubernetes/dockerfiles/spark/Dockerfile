@@ -27,7 +27,9 @@ ARG k8s_tests=${spark_dist}/kubernetes/tests
 # If this docker file is being used in the context of building your images from a Spark
 # distribution, the docker build command should be invoked from the top level directory
 # of the Spark distribution. E.g.:
-# docker build -t spark:latest -f dist/kubernetes/dockerfiles/spark/Dockerfile .
+# docker build -t spark:base -f Dockerfile
+# docker build -t spark:python -f Dockerfile.python
+# docker build -t spark:R -f Dockerfile.R
 
 # hadolint ignore=DL3017,DL3018,DL4005
 RUN set -ex && \
