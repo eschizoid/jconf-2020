@@ -12,11 +12,15 @@ dependencies {
 
     implementation "org.apache.hadoop:hadoop-aws:$hadoopAws",
             "mrpowers:spark-daria:$sparkDariaVersion",
-            "org.apache.spark:spark-sql_2.12:$sparkVersion",
-            "org.apache.spark:spark-core_2.12:$sparkVersion",
-            "org.apache.spark:spark-streaming_2.12:$sparkVersion"
-
-    testImplementation 'org.scalatest:scalatest_2.12:3.0.5'
+            "org.apache.spark:spark-sql_2.11:$sparkVersion",
+            "org.apache.spark:spark-core_2.11:$sparkVersion",
+            "org.apache.spark:spark-streaming_2.11:$sparkVersion"
+    
+    testImplementation "org.scalatest:scalatest_2.11:3.0.6",
+            "org.scalamock:scalamock_2.11:4.1.0",
+            "org.mockito:mockito-core:2.18.3",
+            "log4j:log4j:1.2.17",
+            "org.pegdown:pegdown:1.6.0"
 }
 
 jar {
