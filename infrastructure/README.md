@@ -46,12 +46,16 @@ $ eksctl delete cluster \
 ## Minikube Deployment
 
 ### Installing dependencies
+
+Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads) (needed for `minikube`)
 ```bash
 $ brew cask install minikube
 $ brew install kubectl
 ```
 
 ### Starting `minikube`
+
+This will take a few minutes.
 ```bash
 $ minikube start --cpus 5 --memory 8192
 ```
@@ -66,20 +70,22 @@ $ minikube stop
 $ minikuke dashboard
 ```
 
-## Building `docker` images
+### Building `docker` images
+Make sure you have an account with [Docker](https://hub.docker.com).
+[Log in](https://docs.docker.com/engine/reference/commandline/login/) to docker 
 ```bash
 $ cd spark
-$ ./build_dockerf_images.sh
+$ ./build_docker_images.sh
 ```
 
 ## Permissions for spark jobs
 ```bash
-$ kubectl apply -n minikube -f spark-rbac.yaml
+$ kubectl apply -n minikube -f ../../manifests/spark-rbac.yaml
 ```
 
 ## Submitting spark job to `minikube`
 ```bash
-$ ./spark-submit \
+$ bin/spark-submit \
     --master k8s://https://192.168.99.100:8443 \
     --deploy-mode cluster \
     --name spark-pi \
