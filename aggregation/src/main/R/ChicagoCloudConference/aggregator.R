@@ -1,12 +1,10 @@
 library(sparklyr)
 library(dplyr)
-library(glue)
 
 # Include the org.apache.hadoop:hadoop-aws:2.7.3 package
 config <- spark_config()
 config$sparklyr.defaultPackages <- "org.apache.hadoop:hadoop-aws:2.7.3"
-cores <- Sys.getenv("SPARK_CORES")
-masterurl <- toString(glue("local[{cores}]"))
+masterurl <- Sys.getenv("SPARK_MASTER")
 print(masterurl)
 
 # Connect to spark
