@@ -1,2 +1,0 @@
-Spark 2.4.2 (git revision a44880ba74) built for Hadoop 2.7.3
-Build flags: -Psparkr -Phadoop-2.7 -Phive -Phive-thriftserver -Pmesos -Pyarn -Pkubernetes

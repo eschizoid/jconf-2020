@@ -1,5 +1,4 @@
 ## Streaming
-
 This project is pretty much a data generator that simulates a stream of data. Under the hood uses the Twitter Streaming
 API to fetch live tweets. Later using `spark streaming` it takes care of persisting the live tweets into `S3`.
 
