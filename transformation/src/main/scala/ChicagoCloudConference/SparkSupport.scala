@@ -5,8 +5,10 @@ import org.apache.spark.sql.{SQLContext, SparkSession}
 
 trait SparkSupport {
   val spark: SparkSession = SparkSession.builder
+    .config("spark.hadoop.fs.defaultFS", "s3")
+    .config("spark.sql.streaming.checkpointLocation", "checkpoint_transformation_chicago-cloud-conference")
     .appName("chicago-cloud-conference-2019 - Transformation")
-    .master("local[*]")
+    .master(s"local[${sys.env("SPARK_CORES")}]")
     .getOrCreate()
 
   val sc: SparkContext       = spark.sparkContext
@@ -16,7 +18,7 @@ trait SparkSupport {
     sc.setLogLevel("DEBUG")
     sc.hadoopConfiguration.set("fs.s3a.access.key", sys.env("AWS_ACCESS_KEY_ID"))
     sc.hadoopConfiguration.set("fs.s3a.secret.key", sys.env("AWS_SECRET_ACCESS_KEY"))
-    sc.hadoopConfiguration.set("fs.s3.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
+    sc.hadoopConfiguration.set("fs.s3a.fast.upload", "true")
   }
 
   init()

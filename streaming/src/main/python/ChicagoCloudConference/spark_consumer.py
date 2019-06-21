@@ -37,15 +37,17 @@ def process_rdd(time: time_, rdd: RDD) -> None:
 def configure_spark_streaming_context() -> StreamingContext:
     conf = SparkConf()
     conf.setAppName("chicago-cloud-conference-2019 - Streaming")
+    conf.setMaster(f"""local[{os.getenv("SPARK_CORES")}]""")
     sc = SparkContext(conf=conf)
     logging.info("Spark driver version: " + sc.version)
     hadoop_conf = sc._jsc.hadoopConfiguration()
     hadoop_conf.set("fs.s3.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
     hadoop_conf.set("fs.s3.awsAccessKeyId", os.getenv("AWS_ACCESS_KEY_ID"))
     hadoop_conf.set("fs.s3.awsSecretAccessKey", os.getenv("AWS_SECRET_ACCESS_KEY"))
+    hadoop_conf.set("fs.s3a.fast.upload", "true")
     sc.setLogLevel("ERROR")
     ssc = StreamingContext(sc, 1)
-    ssc.checkpoint("checkpoint_chicago-cloud-conference")
+    ssc.checkpoint("checkpoint_streaming_chicago-cloud-conference")
     return ssc
 
 
