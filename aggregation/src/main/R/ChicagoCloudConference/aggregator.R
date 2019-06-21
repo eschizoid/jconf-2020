@@ -1,48 +1,51 @@
-library(sparklyr)
-library(dplyr)
+# @formatter:off
+if (!require(SparkR))
+  install.packages("SparkR", repos = "http://cran.us.r-project.org")
+if (!require(glue))
+  install.packages("glue", repos = "http://cran.us.r-project.org")
 
-# Include the org.apache.hadoop:hadoop-aws:2.7.3 package
-config <- spark_config()
-config$sparklyr.defaultPackages <- "org.apache.hadoop:hadoop-aws:2.7.3"
-masterurl <- Sys.getenv("SPARK_MASTER")
-print(masterurl)
+.libPaths(c(file.path(Sys.getenv("SPARK_HOME"), "R", "lib"), .libPaths()))
 
-# Connect to spark
-sc <- sparklyr::spark_connect(master = masterurl,
-appName = "chicago-cloud-conference - Visualization",
-spark_home = Sys.getenv("SPARK_HOME"),
-config = config)
-ctx <- sparklyr::spark_context(sc)
+library(SparkR)
+library(glue)
 
-version <- sprintf("Spark version: %s", spark_version(sc))
+sc <- sparkR.session(
+  master = Sys.getenv("SPARK_MASTER"),
+  appName = "chicago-cloud-conference - Aggreagation",
+  sparkPackages = c("org.apache.hadoop:hadoop-aws:2.7.3")
+)
+
+version <- sprintf("Spark version: %s", sparkR.version())
 print(version)
 
-# Set the java spark context
-jsc <- invoke_static(sc, "org.apache.spark.api.java.JavaSparkContext", "fromSparkContext", ctx)
+hConf = SparkR:::callJMethod(sc, "conf")
+SparkR:::callJMethod(hConf,
+                     "set",
+                     "fs.s3a.access.key",
+                     Sys.getenv("AWS_ACCESS_KEY_ID"))
+SparkR:::callJMethod(hConf,
+                     "set",
+                     "fs.s3a.secret.key",
+                     Sys.getenv("AWS_SECRET_ACCESS_KEY"))
 
-# Set the s3 configs:
-hconf <- jsc %>% invoke("hadoopConfiguration")
-hconf %>% invoke("set", "fs.s3a.access.key", Sys.getenv("AWS_ACCESS_KEY_ID"))
-hconf %>% invoke("set", "fs.s3a.secret.key", Sys.getenv("AWS_SECRET_ACCESS_KEY"))
+schema <- structType(
+  structField("created_at", "string"),
+  structField("text", "string"),
+  structField("location", "string"),
+  structField("hashtags", "string")
+)
 
-# Read using sparklyr packages
-tweetsparquet <- spark_read_parquet(sc, name = "tweetsparquet", path = "s3a://chicago-cloud-conference-2019/silver/*/part-*.parquet")
-head(tweetsparquet)
+read_stream <- read.stream("parquet",
+                           path = "s3a://chicago-cloud-conference-2019/silver/*/part-*.parquet",
+                           schema = schema)
 
-#TODO perform aggregations before saving to gold bucket
-save_aggregations <- function(tweetsparquet, grain_size) {
-    sparklyr::spark_write_parquet(tweetsparquet,
-    path = toString(glue("s3a://chicago-cloud-conference-2019/gold/{grain}_minute_grain_treding_topic", grain = grain_size)),
-    mode = "overwrite")
-}
+select_stream <- selectExpr(read_stream, "explode(split(hashtags, ',')) as hashtags")
+filtered_stream <- filter(select_stream, select_stream$hashtags != "")
 
-print("Writing 1 minute aggregations...")
-save_aggregations(tweetsparquet, 1)
-print("Writing 5 minute aggregations...")
-save_aggregations(tweetsparquet, 5)
-print("Writing 15 minute aggregations...")
-save_aggregations(tweetsparquet, 15)
-print("Writing 30 minute aggregations...")
-save_aggregations(tweetsparquet, 30)
-print("Writing 60 minute aggregations...")
-save_aggregations(tweetsparquet, 60)
+write_stream <- write.stream(filtered_stream,
+                             #"parquet",
+                             #path = toString(glue("s3a://chicago-cloud-conference-2019/gold/{date}", date = Sys.Date())),
+                             checkpointLocation = "checkpoint_aggregation_chicago-cloud-conference",
+                             "console")
+
+awaitTermination(write_stream)

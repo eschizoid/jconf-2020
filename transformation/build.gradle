@@ -5,7 +5,6 @@ group 'com.chicagocloudconference'
 version '1.0-SNAPSHOT'
 
 dependencies {
-
     compileOnly "org.scala-lang:scala-library:$scalaVersion",
             "org.scala-lang:scala-reflect:$scalaVersion",
             "org.scala-lang:scala-compiler:$scalaVersion"
@@ -15,7 +14,7 @@ dependencies {
             "org.apache.spark:spark-sql_2.11:$sparkVersion",
             "org.apache.spark:spark-core_2.11:$sparkVersion",
             "org.apache.spark:spark-streaming_2.11:$sparkVersion"
-    
+
     testImplementation "org.scalatest:scalatest_2.11:3.0.6",
             "org.scalamock:scalamock_2.11:4.1.0",
             "org.mockito:mockito-core:2.18.3",
