@@ -1,5 +1,4 @@
 FROM ubuntu:16.04
-MAINTAINER Apache Software Foundation <dev@zeppelin.apache.org>
 
 # `Z_VERSION` will be updated by `dev/change_zeppelin_version.sh`
 ENV Z_VERSION="0.9.0-SNAPSHOT"
@@ -80,12 +79,6 @@ RUN apt-get install -y apt-transport-https && \
 RUN echo "$LOG_TAG Cleanup" && \
     apt-get autoclean && \
     apt-get clean
-
-#RUN echo "$LOG_TAG Download Zeppelin binary" && \
-#    wget -O /tmp/zeppelin-${Z_VERSION}-bin-all.tgz http://archive.apache.org/dist/zeppelin/zeppelin-${Z_VERSION}/zeppelin-${Z_VERSION}-bin-all.tgz && \
-#    tar -zxvf /tmp/zeppelin-${Z_VERSION}-bin-all.tgz && \
-#    rm -rf /tmp/zeppelin-${Z_VERSION}-bin-all.tgz && \
-#    mv /zeppelin-${Z_VERSION}-bin-all ${Z_HOME}
 
 ADD dist/zeppelin-${Z_VERSION}.tar.gz /
 RUN ln -s /zeppelin-${Z_VERSION} /zeppelin

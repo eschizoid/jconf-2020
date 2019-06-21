@@ -13,7 +13,7 @@ $ brew install weaveworks/tap/eksctl
 ```bash
 $ eksctl create cluster \
     --name=chicago-cloud-conference-2019 \
-    --nodes=3 \
+    --nodes=7 \
     --version=1.12 \
     --region=us-east-1 \
     --node-type t3.medium \
@@ -70,22 +70,21 @@ $ minikube stop
 $ minikuke dashboard
 ```
 
-### Building `docker` images
+## Building `docker` images
 Make sure you have an account with [Docker](https://hub.docker.com).
 [Log in](https://docs.docker.com/engine/reference/commandline/login/) to docker 
 ```bash
-$ cd spark
-$ ./build_docker_images.sh
+$ ./bin/build_docker_images.sh
 ```
 
-## Permissions for spark jobs
+## Deploy resources to `K8s` cluster (`minikube` or `eks`)
 ```bash
-$ kubectl apply -n minikube -f ../../manifests/spark-rbac.yaml
+$ ./bin/apply_manifests.sh
 ```
 
-## Submitting spark job to `minikube`
+## Submitting spark jobs to `K8s` cluster (`minikube` or `eks`)
 ```bash
-$ bin/spark-submit \
+$ ${SPARK_HOME}/bin/spark-submit \
     --master k8s://https://192.168.99.100:8443 \
     --deploy-mode cluster \
     --name spark-pi \
