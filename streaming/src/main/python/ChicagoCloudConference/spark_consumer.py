@@ -7,7 +7,7 @@ from pyspark.sql import SQLContext
 from pyspark.sql.types import StringType
 from pyspark.streaming import StreamingContext
 
-logging.basicConfig(format='%(asctime)s %(levelname)-8s %(message)s', level=logging.ERROR, datefmt='%Y-%m-%d %H:%M:%S')
+logging.basicConfig(format='%(asctime)s %(levelname)-8s %(message)s', level=logging.INFO, datefmt='%Y-%m-%d %H:%M:%S')
 
 
 def reverse_current_time_millis() -> str:
