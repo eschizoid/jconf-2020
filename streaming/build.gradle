@@ -9,6 +9,8 @@ repositories {
     }
 }
 
+version '1.0-SNAPSHOT'
+
 tasks.flake8.enabled = false
 tasks.packageDocs.enabled = false
 tasks.pytest.enabled = false

@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+set -a
+source .env
+set +a
 
 if command -v java >/dev/null; then
     echo "java runtime found"
@@ -39,7 +42,6 @@ fi
 
 ./gradlew \
     scalafmtAll \
-    generateSetupPy \
     downloadPythonDependecies \
     build \
     test \
