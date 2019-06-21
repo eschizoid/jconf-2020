@@ -1,17 +1,20 @@
+import logging
 import os
 import time as time_
 
-from pyspark import SparkConf, SparkContext
+from pyspark import SparkConf, SparkContext, RDD
 from pyspark.sql import SQLContext
 from pyspark.sql.types import StringType
 from pyspark.streaming import StreamingContext
 
+logging.basicConfig(format='%(asctime)s %(levelname)-8s %(message)s', level=logging.ERROR, datefmt='%Y-%m-%d %H:%M:%S')
 
-def reverse_current_time_millis():
+
+def reverse_current_time_millis() -> str:
     return str(int(round(time_.time() * 1000)))[::-1]
 
 
-def get_sql_context_instance(spark_context):
+def get_sql_context_instance(spark_context: SparkContext) -> SQLContext:
     if "sqlContextSingletonInstance" not in globals():
         globals()["sqlContextSingletonInstance"] = SQLContext(spark_context)
     return globals()["sqlContextSingletonInstance"]
@@ -19,11 +22,11 @@ def get_sql_context_instance(spark_context):
 
 # TODO figure out how to use the time parameter instead
 #  of using the function reverse_current_time_millis()
-def process_rdd(time, rdd):
+def process_rdd(time: time_, rdd: RDD) -> None:
     if rdd.isEmpty():
         return
     else:
-        print("----------- %s -----------" % str(time))
+        logging.info("----------- %s -----------" % str(time))
         sql_context = get_sql_context_instance(rdd.context)
         twitts_df = sql_context.createDataFrame(rdd, StringType())
         twitts_df.write.json(
@@ -31,11 +34,11 @@ def process_rdd(time, rdd):
                 "%Y-%m-%d")}/{reverse_current_time_millis()}""")
 
 
-def configure_spark_streaming_context():
+def configure_spark_streaming_context() -> StreamingContext:
     conf = SparkConf()
     conf.setAppName("chicago-cloud-conference-2019 - Streaming")
     sc = SparkContext(conf=conf)
-    print("Spark driver version: " + sc.version)
+    logging.info("Spark driver version: " + sc.version)
     hadoop_conf = sc._jsc.hadoopConfiguration()
     hadoop_conf.set("fs.s3.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
     hadoop_conf.set("fs.s3.awsAccessKeyId", os.getenv("AWS_ACCESS_KEY_ID"))
@@ -47,12 +50,16 @@ def configure_spark_streaming_context():
 
 
 def main():
-    os.environ["PYSPARK_SUBMIT_ARGS"] = "--packages org.apache.hadoop:hadoop-aws:2.7.3, pyspark-shell"
-    ssc = configure_spark_streaming_context()
-    datastream = ssc.socketTextStream(os.getenv("TCP_IP"), int(os.getenv("TCP_PORT")))
-    datastream.foreachRDD(process_rdd)
-    ssc.start()
-    ssc.awaitTermination()
+    try:
+        logging.info("Starting up consumer...")
+        os.environ["PYSPARK_SUBMIT_ARGS"] = "--packages org.apache.hadoop:hadoop-aws:2.7.3, pyspark-shell"
+        ssc = configure_spark_streaming_context()
+        datastream = ssc.socketTextStream(os.getenv("TCP_IP"), int(os.getenv("TCP_PORT")))
+        datastream.foreachRDD(process_rdd)
+        ssc.start()
+        ssc.awaitTermination()
+    except KeyboardInterrupt:
+        logging.info('Closing producer.')
 
 
 if __name__ == "__main__":
