@@ -83,13 +83,28 @@ $ ./bin/apply_manifests.sh
 ```
 
 ## Submitting spark jobs to `K8s` cluster (`minikube` or `eks`)
+
+### Twitter Producer (`python`)
 ```bash
-$ ${SPARK_HOME}/bin/spark-submit \
-    --master k8s://https://192.168.99.100:8443 \
-    --deploy-mode cluster \
-    --name spark-pi \
-    --class org.apache.spark.examples.SparkPi \
-    --conf spark.executor.instances=3 \
-    --conf spark.kubernetes.container.image=docker.io/eschizoid/spark:base \
-    local:///opt/spark/examples/target/original-spark-examples_2.11-2.4.2.jar
+$ ./bin/run_producer.sh
+```
+
+### Spark Consumer (`python`)
+```bash
+$ ./bin/run_producer.sh
+```
+
+### Spark Transformer (`scala`)
+```bash
+$ ./bin/run_transformer
+```
+
+### Spark Aggregator (`R`)
+```bash
+$ ./bin/run_aggregator
+```
+
+### Spark Visualizer (`node` / `notebook`)
+```bash
+$ ./bin/run_visualizer.sh
 ```

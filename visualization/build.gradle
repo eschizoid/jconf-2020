@@ -2,8 +2,8 @@ node {
     download = true
 }
 
-task helloWorld(type: NodeTask, dependsOn: 'npmInstall') {
+task compileJS(type: NodeTask, dependsOn: 'npmInstall') {
     script = file('src/main/node/ChicagoCloudConference')
 }
 
-task build(dependsOn: 'helloWorld') {}
+task build(dependsOn: 'compileJS') {}

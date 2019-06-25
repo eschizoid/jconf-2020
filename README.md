@@ -1,5 +1,7 @@
 ## Chicago Cloud Conference 2019 - Native Spark Executors on K8's: Diving Into a Data Lake
 
+Before you clone this repo, please first install [Git Large File Storage](https://help.github.com/en/articles/installing-git-large-file-storage).
+
 ### Architecture
 
 ### Project Structure
