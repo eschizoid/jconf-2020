@@ -1,11 +1,10 @@
 package ChicagoCloudConference
 
-import java.time.LocalDate
 import java.util.regex.Pattern
 
 import com.github.mrpowers.spark.daria.sql.EtlDefinition
 import org.apache.spark.sql.DataFrame
-import org.apache.spark.sql.functions.{coalesce, get_json_object, udf}
+import org.apache.spark.sql.functions._
 import org.apache.spark.sql.streaming.OutputMode
 import org.apache.spark.sql.types.{StringType, StructField, StructType}
 
@@ -19,7 +18,7 @@ class Transformer extends SparkSupport {
 
     def extractAll =
       udf((text: String) => {
-        val matcher = pattern.matcher(if (text == null) "" else text)
+        val matcher = pattern.matcher(text)
         val result  = ListBuffer.empty[String]
         while (matcher.find()) {
           result += matcher.group()
@@ -38,7 +37,7 @@ class Transformer extends SparkSupport {
     sourceDF = streamingLakeDF,
     transform = parquetTransformer(),
     write = parquetStreamWriter(
-      s"s3a://chicago-cloud-conference-2019/silver/${LocalDate.now.toString}",
+      s"s3a://chicago-cloud-conference-2019/silver",
       "checkpoint_transformation_chicago-cloud-conference"
     )
   )
@@ -47,11 +46,12 @@ class Transformer extends SparkSupport {
 
   private def parquetTransformer()(df: DataFrame): DataFrame = {
     df.select(
-        get_json_object($"value", "$.created_at").alias("created_at"),
+        get_json_object($"value", "$.timestamp_ms").alias("timestamp_ms"),
         get_json_object($"value", "$.extended_tweet").alias("extended_tweet"),
         get_json_object($"value", "$.text").alias("text"),
         get_json_object($"value", "$.user").alias("user")
       )
+      .withColumn("created_at", to_date(from_unixtime($"timestamp_ms" / 1000), "yyyy-MM-dd"))
       .select($"created_at", $"extended_tweet", $"text", $"user")
       .withColumn("location", get_json_object($"user", "$.location"))
       .withColumn("full_text", get_json_object($"extended_tweet", "$.full_text"))
@@ -59,16 +59,19 @@ class Transformer extends SparkSupport {
       .withColumn("text", coalesce($"full_text", $"text"))
       .drop("full_text")
       .select($"created_at", $"text", $"location")
-      .withColumn("hashtags", Regex.extractAll($"text"))
       .na
       .fill("", Seq("text", "location", "hashtags"))
+      .withColumn("hashtags", Regex.extractAll($"text"))
   }
 
   private def parquetStreamWriter(dataPath: String, checkpointPath: String)(df: DataFrame): Unit = {
-    val query = df.writeStream
+    val query = df
+      .repartition($"created_at")
+      .writeStream
       .option("checkpointLocation", checkpointPath)
       .option("path", dataPath)
       .outputMode(OutputMode.Append)
+      .partitionBy("created_at")
       .start()
 
     query.awaitTermination()

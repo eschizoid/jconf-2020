@@ -39,13 +39,22 @@ read_stream <- read.stream("parquet",
                            path = "s3a://chicago-cloud-conference-2019/silver/*/part-*.parquet",
                            schema = schema)
 
-select_stream <- selectExpr(read_stream, "explode(split(hashtags, ',')) as hashtags")
-filtered_stream <- filter(select_stream, select_stream$hashtags != "")
+select_stream <-
+  selectExpr(read_stream,
+             "explode(split(hashtags, ',')) as hashtags")
+filtered_stream <-
+  filter(select_stream, select_stream$hashtags != "")
+counted_stream <-
+  count(groupBy(filtered_stream, "hashtags"))
+arranged_stream <-
+  orderBy(counted_stream, desc(counted_stream$count))
 
-write_stream <- write.stream(filtered_stream,
-                             #"parquet",
-                             #path = toString(glue("s3a://chicago-cloud-conference-2019/gold/{date}", date = Sys.Date())),
-                             checkpointLocation = "checkpoint_aggregation_chicago-cloud-conference",
-                             "console")
+write_stream <-
+  write.stream(arranged_stream,
+               # "parquet",
+               # path = "s3a://chicago-cloud-conference-2019/gold",
+               checkpointLocation = "checkpoint_aggregation_chicago-cloud-conference",
+               outputMode = "complete",
+               "console")
 
 awaitTermination(write_stream)
