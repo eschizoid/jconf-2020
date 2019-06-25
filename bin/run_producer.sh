@@ -13,7 +13,13 @@ else
     case "${o}" in
         t)
             track=${OPTARG}
-            python3 ./streaming/src/main/python/ChicagoCloudConference/twitter_producer.py --track ${track}
+            ${SPARK_HOME}/bin/spark-submit \
+                --master "${SPARK_MASTER}" \
+                --deploy-mode "${SPARK_DEPLOY_MODE}" \
+                --conf "spark.executor.instances=1" \
+                --conf "spark.kubernetes.container.image=docker.io/eschizoid/spark:python" \
+                --py-files "streaming/build/distributions/streaming-1.0-SNAPSHOT.tar.gz" \
+                streaming/src/main/python/ChicagoCloudConference/twitter_producer.py --track ${track}
             ;;
         \?)
             usage
