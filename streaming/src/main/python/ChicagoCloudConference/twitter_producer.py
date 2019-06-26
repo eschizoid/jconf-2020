@@ -3,7 +3,6 @@ import logging
 import os
 import socket
 import sys
-import unicodedata
 from argparse import ArgumentParser
 
 from twython import TwythonStreamer
@@ -43,17 +42,6 @@ class TwitterStreamer(TwythonStreamer):
             self.number_of_batches += 1
             self.tweets = []
 
-    @staticmethod
-    def get_tweet_text(tweet: dict) -> str:
-        if not tweet["truncated"]:
-            text = str(tweet['text'])
-        else:
-            text = str(tweet["extended_tweet"]["full_text"])
-        # lang = map(lambda t: t['lang'], tweet)
-        # country = map(lambda t: t['place']['country'] if t['place'] is not None else None, tweet)
-        clean_text = unicodedata.normalize(u'NFKD', text).encode('ascii', 'ignore').decode('utf8').replace("\n", " ")
-        return clean_text
-
 
 def start_socket_server() -> socket:
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -70,7 +58,6 @@ def main():
     args = parser.parse_args()
     logging.info(f'Setting up streaming with {args.track}')
     tcp_connection = start_socket_server()
-    # TODO inject these via k8s secrets
     try:
         stream = TwitterStreamer(tcp_connection,
                                  app_key=os.getenv('CONSUMER_KEY'),
