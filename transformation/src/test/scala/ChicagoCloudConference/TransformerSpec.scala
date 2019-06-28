@@ -39,16 +39,14 @@ class TransformerSpec extends FlatSpec with Matchers with SparkSupport {
         get_json_object($"value", "$.user").alias("user")
       )
       .withColumn("created_at", to_date(from_unixtime($"timestamp_ms" / 1000), "yyyy-MM-dd"))
-      .select($"created_at", $"extended_tweet", $"text", $"user")
       .withColumn("location", get_json_object($"user", "$.location"))
       .withColumn("full_text", get_json_object($"extended_tweet", "$.full_text"))
-      .select($"created_at", $"full_text", $"text", $"location")
       .withColumn("text", coalesce($"full_text", $"text"))
       .drop("full_text")
-      .select($"created_at", $"text", $"location")
       .na
       .fill("", Seq("text", "location", "hashtags"))
       .withColumn("hashtags", regexp_extractAll($"text"))
+      .select($"timestamp_ms", $"created_at", $"text", $"location", $"hashtags")
 
     val query = parquet
       .repartition($"created_at")
