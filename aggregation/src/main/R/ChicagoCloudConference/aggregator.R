@@ -24,6 +24,9 @@ SparkR:::callJMethod(hConf,
                      "set",
                      "fs.s3a.secret.key",
                      Sys.getenv("AWS_SECRET_ACCESS_KEY"))
+SparkR:::callJMethod(hConf,
+                     "set",
+                     "fs.s3a.fast.upload", "true")
 
 schema <- structType(
   structField("timestamp_ms", "string"),
@@ -33,38 +36,53 @@ schema <- structType(
   structField("hashtags", "string")
 )
 
-read_stream <- read.stream("parquet",
-                           path = "s3a://chicago-cloud-conference-2019/silver/*/part-*.parquet",
-                           schema = schema)
+readStream <- read.stream("parquet",
+                          path = "s3a://chicago-cloud-conference-2019/silver/*/part-*.parquet",
+                          schema = schema)
 
-select_stream <-
+transformStream <-
   selectExpr(
-    read_stream,
+    readStream,
     "to_timestamp(cast(timestamp_ms as bigint) / 1000) as timestamp",
     "explode(split(hashtags, ',')) as hashtags"
   )
-filtered_stream <-
-  filter(select_stream,
-         select_stream$hashtags != "")
-watermarked_stream <-
-  withWatermark(filtered_stream,
+transformStream <-
+  filter(transformStream,
+         transformStream$hashtags != "")
+transformStream <-
+  withWatermark(transformStream,
                 "timestamp", "10 minutes")
-windowed_stream <- count(groupBy(
-  watermarked_stream,
-  window(watermarked_stream$timestamp, "5 minutes"),
-  watermarked_stream$hashtags
+transformStream <- count(groupBy(
+  transformStream,
+  window(transformStream$timestamp, "5 minutes"),
+  transformStream$hashtags
 ))
+transformStream <-
+  withColumn(transformStream, "grain_size", lit("5m"))
+transformStream <-
+  repartition(transformStream,
+              col = transformStream$"grain_size")
 
-write_stream <-
+consoleStream <-
   write.stream(
-    windowed_stream,
-    # "parquet",
-    # path = "s3a://chicago-cloud-conference-2019/gold",
-    checkpointLocation = "checkpoint_aggregation_chicago-cloud-conference",
+    transformStream,
+    partitionBy = "grain_size",
+    checkpointLocation = "checkpoint_aggregation_chicago-cloud-conference-console",
     outputMode = "update",
     numRows = 50,
     truncate = FALSE,
+    trigger.processingTime = "2 minutes",
     "console"
   )
 
-awaitTermination(write_stream)
+# parquetStream <-
+#   write.stream(
+#     transformStream,
+#     partitionBy = "grain_size",
+#     path = "s3a://chicago-cloud-conference-2019/gold",
+#     checkpointLocation = "checkpoint_aggregation_chicago-cloud-conference-s3",
+#     outputMode = "append",
+#     "parquet"
+#   )
+
+awaitTermination(consoleStream)
