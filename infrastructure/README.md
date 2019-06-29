@@ -4,6 +4,7 @@
 
 ### Installing dependencies
 ```bash
+$ brew install gettext
 $ brew aws-cli
 $ brew tap weaveworks/tap
 $ brew install weaveworks/tap/eksctl
@@ -49,6 +50,7 @@ $ eksctl delete cluster \
 
 Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads) (needed for `minikube`)
 ```bash
+$ brew install gettext
 $ brew cask install minikube
 $ brew install kubectl
 ```
@@ -57,7 +59,7 @@ $ brew install kubectl
 
 This will take a few minutes.
 ```bash
-$ minikube start --cpus 5 --memory 8192
+$ minikube start --cpus 7 --memory 8192
 ```
 
 ### Stopping `minikube`
