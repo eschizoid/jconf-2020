@@ -271,7 +271,7 @@ gradle-app.setting
 ### Spark ###
 /checkpoint_streaming_chicago-cloud-conference
 /checkpoint_transformation_chicago-cloud-conference
-/checkpoint_aggregation_chicago-cloud-conference
+/checkpoint_aggregation_chicago-cloud-conference*
 /spark-warehouse
 *metastore_db*
 
