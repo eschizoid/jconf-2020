@@ -1,3 +1,4 @@
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -12,7 +13,7 @@ data:
   # Default value is 'local.zeppelin-project.org' while it points 127.0.0.1 and `kubectl port-forward zeppelin-server` will give localhost to connects.
   # If you have your ingress controller configured to connect to `zeppelin-server` service and have a domain name for it (with wildcard subdomain point the same address), you can replace serviceDomain field with your own domain.
   serviceDomain: local.zeppelin-project.org:8080
-  nginx.conf: |
+  nginx.conf: |-
     daemon off;
     worker_processes auto;
     events {
