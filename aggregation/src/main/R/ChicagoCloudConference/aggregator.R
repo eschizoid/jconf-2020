@@ -75,14 +75,14 @@ consoleStream <-
     "console"
   )
 
-# parquetStream <-
-#   write.stream(
-#     transformStream,
-#     partitionBy = "grain_size",
-#     path = "s3a://chicago-cloud-conference-2019/gold",
-#     checkpointLocation = "checkpoint_aggregation_chicago-cloud-conference-s3",
-#     outputMode = "append",
-#     "parquet"
-#   )
+parquetStream <-
+  write.stream(
+    transformStream,
+    partitionBy = "grain_size",
+    path = "s3a://chicago-cloud-conference-2019/gold",
+    checkpointLocation = "checkpoint_aggregation_chicago-cloud-conference-s3",
+    outputMode = "append",
+    "parquet"
+  )
 
 awaitTermination(consoleStream)
