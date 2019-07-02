@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -a
-source .env
+source .env.local
 set +a
 
 if command -v java >/dev/null; then
@@ -47,4 +47,8 @@ fi
     test \
     shadowJar \
     rPackageDest \
-    rPackageBuild
+    rPackageBuild \
+    copyPythonExec \
+    copyRExec \
+    copyScalaExec
+
