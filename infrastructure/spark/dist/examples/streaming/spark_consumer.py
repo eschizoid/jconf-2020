@@ -45,7 +45,7 @@ def configure_spark_streaming_context() -> StreamingContext:
     hadoop_conf.set("fs.s3.awsAccessKeyId", os.getenv("AWS_ACCESS_KEY_ID"))
     hadoop_conf.set("fs.s3.awsSecretAccessKey", os.getenv("AWS_SECRET_ACCESS_KEY"))
     hadoop_conf.set("fs.s3a.fast.upload", "true")
-    sc.setLogLevel("ERROR")
+    sc.setLogLevel(os.getenv("LOGGING_LEVEL"))
     ssc = StreamingContext(sc, 1)
     ssc.checkpoint("checkpoint_streaming_chicago-cloud-conference")
     return ssc

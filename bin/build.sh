@@ -41,6 +41,7 @@ else
 fi
 
 ./gradlew \
+    clean \
     scalafmtAll \
     downloadPythonDependecies \
     build \

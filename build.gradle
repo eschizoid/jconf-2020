@@ -50,10 +50,12 @@ subprojects {
         from file("${project.rootDir}/streaming/build/distributions/streaming-1.0-SNAPSHOT.tar.gz")
         into file("${project.rootDir}/infrastructure/spark/dist/examples/streaming")
     }
+
     task copyRExec(type: Copy) {
         from file("${project.rootDir}/aggregation/src/main/R/ChicagoCloudConference/aggregator.R")
         into file("${project.rootDir}/infrastructure/spark/dist/examples/aggregation")
     }
+
     task copyScalaExec(type: Copy) {
         from file("${project.rootDir}/transformation/build/libs/transformation-1.0-SNAPSHOT-all.jar")
         into file("${project.rootDir}/infrastructure/spark/dist/examples/transformation")
