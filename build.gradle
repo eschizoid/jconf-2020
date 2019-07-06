@@ -47,8 +47,6 @@ subprojects {
         into file("${project.rootDir}/infrastructure/spark/dist/examples/streaming")
         from file("${project.rootDir}/streaming/src/main/python/ChicagoCloudConference/twitter_producer.py")
         into file("${project.rootDir}/infrastructure/spark/dist/examples/streaming")
-        from file("${project.rootDir}/streaming/dependencies.zip")
-        into file("${project.rootDir}/infrastructure/spark/dist/examples/streaming")
     }
 
     task copyRExec(type: Copy) {

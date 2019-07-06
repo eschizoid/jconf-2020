@@ -44,7 +44,6 @@ fi
     scalafmtAll \
     downloadPythonDependecies \
     build \
-    zipPythonDependecies \
     test \
     shadowJar \
     rPackageDest \
