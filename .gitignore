@@ -274,6 +274,7 @@ gradle-app.setting
 /checkpoint_transformation_chicago-cloud-conference
 /checkpoint_aggregation_chicago-cloud-conference*
 /spark-warehouse
+/streaming/dependencies*
 *metastore_db*
 
 # End of https://www.gitignore.io/api/macos,scala,gradle,python,intellij+all

@@ -15,7 +15,7 @@ RUN apk add --no-cache python && \
     rm -r /root/.cache
 
 COPY dist/python/lib /opt/spark/python/lib
-ENV PYTHONPATH /opt/spark/python/lib/pyspark.zip:/opt/spark/python/lib/py4j-*.zip
+ENV PYTHONPATH /opt/spark/python/lib/pyspark.zip:/opt/spark/python/lib/py4j-*.zip:/opt/spark/examples/streaming/dependencies.zip
 
 WORKDIR /opt/spark/work-dir
 ENTRYPOINT [ "/opt/entrypoint.sh" ]

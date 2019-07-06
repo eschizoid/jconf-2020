@@ -9,7 +9,7 @@ repositories {
     }
 }
 
-version '1.0-SNAPSHOT'
+version '1.0'
 
 tasks.flake8.enabled = false
 tasks.packageDocs.enabled = false
@@ -41,6 +41,9 @@ task downloadPythonDependecies(type: Exec) {
     commandLine '.././bin/download_python_dependencies.sh'
 }
 
+task zipPythonDependecies(type: Exec) {
+    commandLine '.././bin/zip_python_dependencies.sh'
+}
 
 def getPythonBinary() {
     if (System.env['PYTHON_BIN'] != null) {

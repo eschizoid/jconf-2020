@@ -87,4 +87,4 @@ parquetStream <-
     "parquet"
   )
 
-awaitTermination(consoleStream)
+awaitTermination(parquetStream)

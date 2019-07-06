@@ -41,10 +41,10 @@ else
 fi
 
 ./gradlew \
-    clean \
     scalafmtAll \
     downloadPythonDependecies \
     build \
+    zipPythonDependecies \
     test \
     shadowJar \
     rPackageDest \

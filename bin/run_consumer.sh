@@ -20,7 +20,6 @@ if lsof -Pi :9009 -sTCP:LISTEN -t >/dev/null ; then
         --conf "spark.kubernetes.driverEnv.TCP_IP=${TCP_IP}" \
         --conf "spark.kubernetes.driverEnv.TCP_PORT=${TCP_PORT}" \
         --conf "spark.kubernetes.pyspark.pythonVersion=3" \
-        --py-files "local:///opt/spark/streaming/streaming-1.0-SNAPSHOT.tar.gz" \
         local:///opt/spark/examples/streaming/spark_consumer.py
 else
     echo "Socket not open. Start producer first!"
