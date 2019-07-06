@@ -5,7 +5,9 @@ set +a
 
 ${SPARK_SUBMIT_BIN}/bin/spark-submit \
     --master "${SPARK_MASTER}" \
-    --deploy-mode ${SPARK_DEPLOY_MODE} \
+    --deploy-mode "${SPARK_DEPLOY_MODE}" \
+    --conf "spark.kubernetes.driver.limit.cores=1" \
+    --conf "spark.kubernetes.executor.limit.cores=1" \
     --conf "spark.kubernetes.container.image=docker.io/eschizoid/spark:2.4.3" \
     --conf "spark.kubernetes.authenticate.driver.serviceAccountName=spark" \
     --conf "spark.kubernetes.driverEnv.AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" \

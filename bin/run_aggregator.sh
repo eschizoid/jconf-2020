@@ -5,7 +5,9 @@ set +a
 
 ${SPARK_SUBMIT_BIN}/bin/spark-submit \
     --master "${SPARK_MASTER}" \
-    --deploy-mode ${SPARK_DEPLOY_MODE} \
+    --deploy-mode "${SPARK_DEPLOY_MODE}" \
+    --conf "spark.kubernetes.driver.limit.cores=1" \
+    --conf "spark.kubernetes.executor.limit.cores=1" \
     --conf "spark.kubernetes.authenticate.driver.serviceAccountName=spark" \
     --conf "spark.kubernetes.container.image=docker.io/eschizoid/spark:R" \
     --conf "spark.kubernetes.driverEnv.AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" \
@@ -18,4 +20,4 @@ ${SPARK_SUBMIT_BIN}/bin/spark-submit \
     --conf "spark.kubernetes.driverEnv.SPARK_MASTER=${SPARK_MASTER}" \
     --conf "spark.kubernetes.driverEnv.TCP_IP=${TCP_IP}" \
     --conf "spark.kubernetes.driverEnv.TCP_PORT=${TCP_PORT}" \
-    local:///opt/spark/examples/aggregation//aggregator.R
+    local:///opt/spark/examples/aggregation/aggregator.R
