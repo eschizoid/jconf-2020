@@ -270,9 +270,9 @@ gradle-app.setting
 **/build/
 
 ### Spark ###
-/checkpoint_streaming_chicago-cloud-conference
-/checkpoint_transformation_chicago-cloud-conference
-/checkpoint_aggregation_chicago-cloud-conference*
+*checkpoint_streaming_chicago-cloud-conference
+*checkpoint_transformation_chicago-cloud-conference
+*checkpoint_aggregation_chicago-cloud-conference*
 /spark-warehouse
 /streaming/dependencies
 /streaming/dependencies.zip
