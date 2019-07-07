@@ -51,7 +51,7 @@ $ eksctl delete cluster \
 Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads) (needed for `minikube`)
 ```bash
 $ brew install gettext
-$ brew cask install minikube
+$ brew cask reinstall virtualbox minikube
 $ brew install kubectl
 ```
 
@@ -70,6 +70,14 @@ $ minikube stop
 ### Monitoring `minikube`
 ```bash
 $ minikuke dashboard
+```
+
+### Caching spark and zeppelin docker images in `minikube`
+```bash
+$ minikube cache add eschizoid/spark:2.4.3
+$ minikube cache add eschizoid/spark:python
+$ minikube cache add eschizoid/spark:R
+$ minikube cache add eschizoid/zeppelin:0.9.0-SNAPSHOT
 ```
 
 ## Building `docker` images

@@ -12,6 +12,8 @@ sc <- sparkR.session(
   sparkPackages = c("org.apache.hadoop:hadoop-aws:2.7.3")
 )
 
+setLogLevel(Sys.getenv("LOGGING_LEVEL"))
+
 version <- sprintf("Spark version: %s", sparkR.version())
 print(version)
 
