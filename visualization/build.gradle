@@ -1,9 +1,0 @@
-node {
-    download = true
-}
-
-task compileJS(type: NodeTask, dependsOn: 'npmInstall') {
-    script = file('src/main/node/ChicagoCloudConference')
-}
-
-task build(dependsOn: 'compileJS') {}

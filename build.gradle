@@ -39,15 +39,12 @@ subprojects {
         apply plugin: 'com.github.arekbee.gradle-R-plugin'
     }
     if (name.startsWith('visualization')) {
-        apply plugin: 'com.moowork.node'
     }
 
     task copyPythonExec(type: Copy) {
         from file("${project.rootDir}/streaming/src/main/python/ChicagoCloudConference/spark_consumer.py")
         into file("${project.rootDir}/infrastructure/spark/dist/examples/streaming")
         from file("${project.rootDir}/streaming/src/main/python/ChicagoCloudConference/twitter_producer.py")
-        into file("${project.rootDir}/infrastructure/spark/dist/examples/streaming")
-        from file("${project.rootDir}/streaming/build/distributions/streaming-1.0-SNAPSHOT.tar.gz")
         into file("${project.rootDir}/infrastructure/spark/dist/examples/streaming")
     }
 

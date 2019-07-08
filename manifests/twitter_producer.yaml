@@ -1,0 +1,51 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: twitter-producer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: twitter-producer
+  template:
+    metadata:
+      labels:
+        app: twitter-producer
+    spec:
+      containers:
+        - image: docker.io/eschizoid/spark:python
+          name: twitter-producer
+          env:
+            - name: CONSUMER_KEY
+              value: $CONSUMER_KEY
+            - name: CONSUMER_SECRET
+              value: $CONSUMER_SECRET
+            - name: ACCESS_TOKEN
+              value: $ACCESS_TOKEN
+            - name: ACCESS_SECRET
+              value: $ACCESS_SECRET
+            - name: LOGGING_LEVEL
+              value: $LOGGING_LEVEL
+            - name: TCP_IP
+              value: "0.0.0.0"
+            - name: TCP_PORT
+              value: "9009"
+          command: ["/bin/sh"]
+          args: ["-c", "python3 /opt/spark/examples/streaming/twitter_producer.py -t trump"]
+          ports:
+            - containerPort: 9009
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: twitter-producer
+spec:
+  selector:
+    app: twitter-producer
+  ports:
+    - name: default
+      protocol: TCP
+      port: 9009
+      targetPort: 9009
