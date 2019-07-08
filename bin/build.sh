@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -a
-source ../.env.local
+source .env.local
 set +a
 
 if command -v java >/dev/null; then
@@ -40,7 +40,7 @@ else
     exit -1
 fi
 
-../gradlew \
+./gradlew \
     scalafmtAll \
     downloadPythonDependecies \
     build \
