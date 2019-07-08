@@ -16,6 +16,6 @@ docker build --no-cache \
 
 cd ../zeppelin
 
-#echo "Building zeppelin image"
-#docker build --no-cache \
-#    -t zeppelin:0.9.0-SNAPSHOT .
+echo "Building zeppelin image"
+docker build --no-cache \
+    -t zeppelin:0.9.0-SNAPSHOT .

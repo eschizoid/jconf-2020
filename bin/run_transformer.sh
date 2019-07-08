@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
-set -a
 source .env
-set +a
 
-${SPARK_SUBMIT_BIN}/bin/spark-submit \
+${SPARK_HOME}/bin/spark-submit \
     --master "${SPARK_MASTER}" \
-    --deploy-mode ${SPARK_DEPLOY_MODE} \
+    --deploy-mode "${SPARK_DEPLOY_MODE}" \
+    --conf "spark.executor.instances=${SPARK_EXECUTOR_INSTANCES}" \
     --conf "spark.kubernetes.container.image=docker.io/eschizoid/spark:2.4.3" \
     --conf "spark.kubernetes.authenticate.driver.serviceAccountName=spark" \
     --conf "spark.kubernetes.driverEnv.AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" \

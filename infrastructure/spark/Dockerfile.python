@@ -11,6 +11,7 @@ RUN apk add --no-cache python && \
     rm -r /usr/lib/python*/ensurepip && \
     pip install --upgrade pip setuptools && \
     # You may install with python3 packages by using pip3.6
+    pip3.6 install twython==3.7.0 pyspark==2.4.3 && \
     # Removed the .cache to save space
     rm -r /root/.cache
 

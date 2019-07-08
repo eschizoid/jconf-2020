@@ -5,7 +5,7 @@
 ### Installing dependencies
 ```bash
 $ brew install gettext
-$ brew aws-cli
+$ brew install awscli
 $ brew tap weaveworks/tap
 $ brew install weaveworks/tap/eksctl
 ```
