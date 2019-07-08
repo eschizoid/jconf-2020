@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
-set -a
-source .env
-set +a
 
-if lsof -Pi :9009 -sTCP:LISTEN -t >/dev/null ; then
+source ../.env
+
+#if lsof -Pi :9009 -sTCP:LISTEN -t >/dev/null ; then
     ${SPARK_SUBMIT_BIN}/bin/spark-submit \
         --master "${SPARK_MASTER}" \
-        --deploy-mode ${SPARK_DEPLOY_MODE} \
+        --deploy-mode "${SPARK_DEPLOY_MODE}" \
+        --conf "spark.kubernetes.driver.limit.cores=1" \
+        --conf "spark.kubernetes.executor.limit.cores=1" \
         --conf "spark.kubernetes.container.image=docker.io/eschizoid/spark:python" \
         --conf "spark.kubernetes.authenticate.driver.serviceAccountName=spark" \
         --conf "spark.kubernetes.driverEnv.AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" \
@@ -20,9 +21,8 @@ if lsof -Pi :9009 -sTCP:LISTEN -t >/dev/null ; then
         --conf "spark.kubernetes.driverEnv.TCP_IP=${TCP_IP}" \
         --conf "spark.kubernetes.driverEnv.TCP_PORT=${TCP_PORT}" \
         --conf "spark.kubernetes.pyspark.pythonVersion=3" \
-        --py-files "local:///opt/spark/streaming/streaming-1.0-SNAPSHOT.tar.gz" \
         local:///opt/spark/examples/streaming/spark_consumer.py
-else
-    echo "Socket not open. Start producer first!"
-    exit 1
-fi
+#else
+#    echo "Socket not open. Start producer first!"
+#    exit 1
+#fi
