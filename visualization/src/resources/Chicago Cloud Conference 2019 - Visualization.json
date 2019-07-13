@@ -1,0 +1,247 @@
+﻿{
+  "paragraphs": [
+    {
+      "text": "%spark.conf\nspark.executor.instances        1\nspark.jars.packages             com.amazonaws:aws-java-sdk:version:1.7.4,org.apache.hadoop:hadoop-aws:2.7.3\nspark.hadoop.fs.s3a.impl        org.apache.hadoop.fs.s3a.S3AFileSystem  \nspark.hadoop.fs.s3a.access.key  AWS_ACCESS_KEY  \nspark.hadoop.fs.s3a.secret.key  AWS_SECRET_KEY\nzeppelin.spark.sql.stacktrace   true",
+      "user": "anonymous",
+      "config": {
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/text",
+        "fontSize": 9,
+        "runOnSelectionChange": true,
+        "title": false,
+        "checkEmpty": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1563050822385_1163957920",
+      "id": "paragraph_1563050822385_1163957920",
+      "dateCreated": "2019-07-14T01:38:41+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:25392",
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "runtimeInfos": {}
+    },
+    {
+      "text": "%spark\nimport org.apache.spark.sql.functions.max\nvar df = sqlContext\n            .read\n            .parquet(\"s3a://chicago-cloud-conference-2019/gold/grain_size=5m\")\n\ndf = df\n    .drop(df.col(\"window\"))\n    .groupBy(\"hashtags\")\n    .agg(max(\"count\").as(\"counts\"))\n\ndf.registerTempTable(\"5m_grain_size\")\n\n\ndf.show()",
+      "user": "anonymous",
+      "config": {
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9,
+        "runOnSelectionChange": true,
+        "title": false,
+        "checkEmpty": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1563050875737_-1692011881",
+      "id": "paragraph_1563050875737_-1692011881",
+      "dateCreated": "2019-07-14T01:38:43+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:25393",
+      "runtimeInfos": {}
+    },
+    {
+      "text": "%spark.sql\n\nSELECT hashtags, counts\nFROM 5m_grain_size\nORDER BY counts DESC\nLIMIT 10\n",
+      "user": "anonymous",
+      "config": {
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9,
+        "runOnSelectionChange": true,
+        "title": false,
+        "checkEmpty": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "pieChart",
+              "height": 300,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {
+                    "columns": [
+                      {
+                        "name": "hashtags0",
+                        "visible": true,
+                        "width": "*",
+                        "sort": {},
+                        "filters": [
+                          {}
+                        ],
+                        "pinned": ""
+                      },
+                      {
+                        "name": "counts1",
+                        "visible": true,
+                        "width": "*",
+                        "sort": {},
+                        "filters": [
+                          {}
+                        ],
+                        "pinned": ""
+                      }
+                    ],
+                    "scrollFocus": {},
+                    "selection": [],
+                    "grouping": {
+                      "grouping": [],
+                      "aggregations": [],
+                      "rowExpandedStates": {}
+                    },
+                    "treeView": {},
+                    "pagination": {
+                      "paginationCurrentPage": 1,
+                      "paginationPageSize": 250
+                    }
+                  },
+                  "tableColumnTypeState": {
+                    "names": {
+                      "hashtags": "string",
+                      "counts": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                },
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default",
+                  "stacked": true
+                },
+                "stackedAreaChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                },
+                "lineChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default",
+                  "forceY": false
+                },
+                "scatterChart": {
+                  "xAxis": {
+                    "name": "counts",
+                    "index": 1,
+                    "aggr": "sum"
+                  },
+                  "yAxis": {
+                    "name": "hashtags",
+                    "index": 0,
+                    "aggr": "sum"
+                  }
+                }
+              },
+              "keys": [
+                {
+                  "name": "hashtags",
+                  "index": 0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "values": [
+                {
+                  "name": "counts",
+                  "index": 1,
+                  "aggr": "sum"
+                }
+              ],
+              "commonSetting": {}
+            },
+            "helium": {}
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1563063719157_931007043",
+      "id": "paragraph_1563063719157_931007043",
+      "dateCreated": "2019-07-14T01:33:56+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:25394",
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "hashtags\tcounts\n#Trump\t143\n#GoogleGate\t53\n#MAGA\t47\n#trump\t34\n#OANN\t26\n#Manama\t24\n#TrumpCamps\t24\n#KAG2020\t23\n#TrumpConcentrationCamps\t22\n#MeganRapinoe\t21\n"
+          },
+          {
+            "type": "TEXT",
+            "data": ""
+          }
+        ]
+      },
+      "runtimeInfos": {}
+    }
+  ],
+  "name": "Chicago Cloud Conference 2019 - Visualization",
+  "id": "2EH5Y8BDF",
+  "defaultInterpreterGroup": "spark",
+  "version": "0.9.0-SNAPSHOT",
+  "permissions": {},
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {},
+  "config": {
+    "isZeppelinNotebookCronEnable": false,
+    "looknfeel": "default",
+    "personalizedMode": "false"
+  },
+  "info": {
+    "isRunning": false
+  },
+  "path": "/Chicago Cloud Conference 2019 - Visualization"
+}

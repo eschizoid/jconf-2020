@@ -65,22 +65,23 @@ transformStream <-
   repartition(transformStream,
               col = transformStream$"grain_size")
 
-consoleStream <-
-  write.stream(
-    transformStream,
-    partitionBy = "grain_size",
-    checkpointLocation = "checkpoint_aggregation_chicago-cloud-conference-console",
-    outputMode = "update",
-    numRows = 50,
-    truncate = FALSE,
-    trigger.processingTime = "2 minutes",
-    "console"
-  )
+# consoleStream <-
+#   write.stream(
+#     transformStream,
+#     partitionBy = "grain_size",
+#     checkpointLocation = "checkpoint_aggregation_chicago-cloud-conference-console",
+#     outputMode = "update",
+#     numRows = 50,
+#     truncate = FALSE,
+#     trigger.processingTime = "2 minutes",
+#     "console"
+#   )
 
 parquetStream <-
   write.stream(
     transformStream,
     partitionBy = "grain_size",
+    compression = "none",
     path = "s3a://chicago-cloud-conference-2019/gold",
     checkpointLocation = "checkpoint_aggregation_chicago-cloud-conference-s3",
     outputMode = "append",
