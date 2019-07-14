@@ -38,8 +38,6 @@ subprojects {
     if (name.startsWith('aggregation')) {
         apply plugin: 'com.github.arekbee.gradle-R-plugin'
     }
-    if (name.startsWith('visualization')) {
-    }
 
     task copyPythonExec(type: Copy) {
         from file("${project.rootDir}/streaming/src/main/python/ChicagoCloudConference/spark_consumer.py")
