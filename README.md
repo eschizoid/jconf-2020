@@ -3,8 +3,7 @@
 Before you clone this repo, please first install [Git Large File Storage](https://help.github.com/en/articles/installing-git-large-file-storage).
 
 ### Architecture
-
-<img src="images/Chicago Cloud Conference 2019.png" width="800" align="center"/>
+![](images/architecture.png)
 
 ### Project Structure
 * #### [Infrastructure](infrastructure/README.md)
