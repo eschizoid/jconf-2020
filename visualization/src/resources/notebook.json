@@ -1,7 +1,7 @@
 ﻿{
   "paragraphs": [
     {
-      "text": "%spark.conf\nspark.executor.instances        1\nspark.jars.packages             com.amazonaws:aws-java-sdk:version:1.7.4,org.apache.hadoop:hadoop-aws:2.7.3\nspark.hadoop.fs.s3a.impl        org.apache.hadoop.fs.s3a.S3AFileSystem  \nspark.hadoop.fs.s3a.access.key  AWS_ACCESS_KEY  \nspark.hadoop.fs.s3a.secret.key  AWS_SECRET_KEY\nzeppelin.spark.sql.stacktrace   true",
+      "text": "%spark.conf\n\nspark.executor.instances        1\nspark.jars.packages             com.amazonaws:aws-java-sdk:version:1.7.4,org.apache.hadoop:hadoop-aws:2.7.3\nspark.hadoop.fs.s3a.impl        org.apache.hadoop.fs.s3a.S3AFileSystem  \nspark.hadoop.fs.s3a.access.key  AWS_ACCESS_KEY  \nspark.hadoop.fs.s3a.secret.key  AWS_SECRET_KEY\nzeppelin.spark.sql.stacktrace   true\n\n\n\n\n\n\n\n",
       "user": "anonymous",
       "config": {
         "editorSetting": {
@@ -10,7 +10,7 @@
           "completionKey": "TAB",
           "completionSupport": true
         },
-        "colWidth": 12,
+        "colWidth": 6,
         "editorMode": "ace/mode/text",
         "fontSize": 9,
         "runOnSelectionChange": true,
@@ -23,22 +23,22 @@
         "params": {},
         "forms": {}
       },
-      "apps": [],
-      "progressUpdateIntervalMs": 500,
-      "jobName": "paragraph_1563050822385_1163957920",
-      "id": "paragraph_1563050822385_1163957920",
-      "dateCreated": "2019-07-14T01:38:41+0000",
-      "status": "FINISHED",
-      "focus": true,
-      "$$hashKey": "object:25392",
       "results": {
         "code": "SUCCESS",
         "msg": []
       },
+      "apps": [],
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1563050822385_1163957920",
+      "id": "paragraph_1563050822385_1163957920",
+      "dateCreated": "2019-07-14T06:53:50+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:305",
       "runtimeInfos": {}
     },
     {
-      "text": "%spark\nimport org.apache.spark.sql.functions.max\nvar df = sqlContext\n            .read\n            .parquet(\"s3a://chicago-cloud-conference-2019/gold/grain_size=5m\")\n\ndf = df\n    .drop(df.col(\"window\"))\n    .groupBy(\"hashtags\")\n    .agg(max(\"count\").as(\"counts\"))\n\ndf.registerTempTable(\"5m_grain_size\")\n\n\ndf.show()",
+      "text": "%spark\n\nimport org.apache.spark.sql.functions.max\n\nvar df = sqlContext\n            .read\n            .parquet(\"s3a://chicago-cloud-conference-2019/gold/grain_size=5m\")\n\ndf = df\n    .drop(df.col(\"window\"))\n    .groupBy(\"hashtags\")\n    .agg(max(\"count\").as(\"counts\"))\n\ndf.registerTempTable(\"5m_grain_size\")\n\n\ndf.show()",
       "user": "anonymous",
       "config": {
         "editorSetting": {
@@ -47,7 +47,7 @@
           "completionKey": "TAB",
           "completionSupport": true
         },
-        "colWidth": 12,
+        "colWidth": 6,
         "editorMode": "ace/mode/scala",
         "fontSize": 9,
         "runOnSelectionChange": true,
@@ -64,10 +64,24 @@
       "progressUpdateIntervalMs": 500,
       "jobName": "paragraph_1563050875737_-1692011881",
       "id": "paragraph_1563050875737_-1692011881",
-      "dateCreated": "2019-07-14T01:38:43+0000",
+      "dateCreated": "2019-07-14T06:54:05+0000",
       "status": "FINISHED",
-      "$$hashKey": "object:25393",
-      "runtimeInfos": {}
+      "$$hashKey": "object:306",
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "//4040-spark-wysodu.local.zeppelin-project.org:8080/jobs/job?id=3",
+              "$$hashKey": "object:1277"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      }
     },
     {
       "text": "%spark.sql\n\nSELECT hashtags, counts\nFROM 5m_grain_size\nORDER BY counts DESC\nLIMIT 10\n",
@@ -204,13 +218,6 @@
         "params": {},
         "forms": {}
       },
-      "apps": [],
-      "progressUpdateIntervalMs": 500,
-      "jobName": "paragraph_1563063719157_931007043",
-      "id": "paragraph_1563063719157_931007043",
-      "dateCreated": "2019-07-14T01:33:56+0000",
-      "status": "FINISHED",
-      "$$hashKey": "object:25394",
       "results": {
         "code": "SUCCESS",
         "msg": [
@@ -224,11 +231,18 @@
           }
         ]
       },
+      "apps": [],
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1563063719157_931007043",
+      "id": "paragraph_1563063719157_931007043",
+      "dateCreated": "2019-07-14T06:52:45+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:307",
       "runtimeInfos": {}
     }
   ],
   "name": "Chicago Cloud Conference 2019 - Visualization",
-  "id": "2EH5Y8BDF",
+  "id": "2EGBHTHZV",
   "defaultInterpreterGroup": "spark",
   "version": "0.9.0-SNAPSHOT",
   "permissions": {},
@@ -240,8 +254,6 @@
     "looknfeel": "default",
     "personalizedMode": "false"
   },
-  "info": {
-    "isRunning": false
-  },
+  "info": {},
   "path": "/Chicago Cloud Conference 2019 - Visualization"
 }
