@@ -3,9 +3,6 @@ set -a
 source .env
 set +a
 
-# Zeppelin
-kubectl apply -f manifests/zeppelin.yaml
-
 # K8S Dashboard
 kubectl create clusterrolebinding kube-system-cluster-admin \
     --clusterrole=cluster-admin \

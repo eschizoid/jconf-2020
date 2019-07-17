@@ -87,7 +87,7 @@ Make sure you have an account with [Docker](https://hub.docker.com).
 $ ./bin/build_docker_images.sh
 ```
 
-## Deploy resources to `K8s` cluster (`minikube` or `eks`)
+## Create roles required for `K8s` and `Spark` (`minikube` or `eks`)
 ```bash
 $ ./bin/apply_manifests.sh
 ```
