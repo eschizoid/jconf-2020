@@ -68,7 +68,7 @@ class Transformer extends SparkSupport {
       .writeStream
       .option("checkpointLocation", checkpointPath)
       .option("path", dataPath)
-      .option("compression", "none")
+      .option("compression", "uncompressed")
       .outputMode(OutputMode.Append)
       .partitionBy("created_at")
       .start()

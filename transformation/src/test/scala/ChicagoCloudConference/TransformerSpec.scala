@@ -53,6 +53,7 @@ class TransformerSpec extends FlatSpec with Matchers with SparkSupport {
       .writeStream
       .option("checkpointLocation", "checkpoint_transformation_chicago-cloud-conference")
       .option("path", s"s3a://chicago-cloud-conference-2019/silver")
+      .option("compression", "uncompressed")
       .outputMode(OutputMode.Append)
       .partitionBy("created_at")
       .start()
