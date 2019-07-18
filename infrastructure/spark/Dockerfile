@@ -22,7 +22,7 @@ ARG k8s_tests=${spark_dist}/kubernetes/tests
 # hadolint ignore=DL3017,DL3018,DL4005
 RUN set -ex && \
     apk upgrade --no-cache && \
-    apk add --no-cache bash tini libc6-compat linux-pam nss && \
+    apk add --no-cache bash tini libc6-compat gcompat linux-pam nss && \
     mkdir -p /opt/spark && \
     mkdir -p /opt/spark/work-dir && \
     touch /opt/spark/RELEASE && \
