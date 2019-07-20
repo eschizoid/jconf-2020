@@ -20,8 +20,6 @@ def get_sql_context_instance(spark_context: SparkContext) -> SQLContext:
     return globals()["sqlContextSingletonInstance"]
 
 
-# TODO figure out how to use the time parameter instead
-#  of using the function reverse_current_time_millis()
 def process_rdd(time: time_, rdd: RDD) -> None:
     if rdd.isEmpty():
         return

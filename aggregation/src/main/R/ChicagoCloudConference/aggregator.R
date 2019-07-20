@@ -53,29 +53,26 @@ transformStream <-
          transformStream$hashtags != "")
 transformStream <-
   withWatermark(transformStream,
-                "timestamp", "10 minutes")
+                "timestamp", "10 minute")
 transformStream <- count(groupBy(
   transformStream,
-  window(transformStream$timestamp, "5 minutes"),
+  window(transformStream$timestamp, "5 minute"),
   transformStream$hashtags
 ))
 transformStream <-
   withColumn(transformStream, "grain_size", lit("5m"))
-transformStream <-
-  repartition(transformStream,
-              col = transformStream$"grain_size")
 
 # consoleStream <-
 #   write.stream(
 #     transformStream,
 #     partitionBy = "grain_size",
 #     checkpointLocation = "checkpoint_aggregation_chicago-cloud-conference-console",
-#     outputMode = "update",
+#     outputMode = "complete",
 #     numRows = 50,
 #     truncate = FALSE,
-#     trigger.processingTime = "2 minutes",
+#     trigger.processingTime = "1 minutes",
 #     "console"
-#   )
+# )
 
 parquetStream <-
   write.stream(
@@ -85,6 +82,7 @@ parquetStream <-
     path = "s3a://chicago-cloud-conference-2019/gold",
     checkpointLocation = "checkpoint_aggregation_chicago-cloud-conference-s3",
     outputMode = "append",
+    trigger.processingTime = "1 minutes",
     "parquet"
   )
 
