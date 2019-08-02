@@ -40,11 +40,12 @@ COPY ${spark_sbin} /opt/spark/sbin
 COPY ${k8s_tests} /opt/spark/tests
 COPY ${img_path}/spark/entrypoint.sh /opt/
 
-ADD https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk/1.7.4/aws-java-sdk-1.7.4.jar /opt/spark/jars/aws-java-sdk-1.7.4.jar
-ADD https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/2.7.3/hadoop-aws-2.7.3.jar /opt/spark/jars/hadoop-aws-2.7.3.jar
-ADD https://repo1.maven.org/maven2/io/minio/spark-select_2.11/2.0/spark-select_2.11-2.0.jar /opt/spark/jars/spark-select_2.11-2.0.jar
-
+ENV AWS_JAVA_SDK_VERSION 1.7.4
+ENV HADOOP_AWS_VERSION 2.7.3
 ENV SPARK_HOME /opt/spark
+
+ADD https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk/$AWS_JAVA_SDK_VERSION/aws-java-sdk-$AWS_JAVA_SDK_VERSION.jar /opt/spark/jars/aws-java-sdk-$AWS_JAVA_SDK_VERSION.jar
+ADD https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/$HADOOP_AWS_VERSION/hadoop-aws-$HADOOP_AWS_VERSION.jar /opt/spark/jars/hadoop-aws-$HADOOP_AWS_VERSION.jar
 
 WORKDIR /opt/spark/work-dir
 
