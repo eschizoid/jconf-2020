@@ -282,3 +282,4 @@ gradle-app.setting
 
 ### Node ###
 */node_modules/*
+/infrastructure/zeppelin/GeoSpark/zeppelin/node_modules/

@@ -1,0 +1,8 @@
+{
+  "type": "VISUALIZATION",
+  "name": "geospark-zeppelin",
+  "description": "Zeppelin visualization support for GeoSpark",
+  "artifact": "/zeppelin/GeoSpark/zeppelin",
+  "license": "BSD-2-Clause",
+  "icon": "<i class='fa fa-globe'></i>"
+}

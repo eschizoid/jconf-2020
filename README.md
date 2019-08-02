@@ -25,5 +25,3 @@ Before you clone this repo, please first install [Git Large File Storage](https:
 * #### `Python 3.7.x`
 
 * #### `R 3.6.x`
-
-* #### `Node 12.4.x`

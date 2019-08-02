@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-cd infrastructure/spark
+cd infrastructure/spark || exit
 
 echo "Building spark 2.4.3 image"
 docker build --no-cache \
@@ -14,7 +14,7 @@ echo "Building spark R image"
 docker build --no-cache \
     -t spark:R -f Dockerfile.R .
 
-cd ../zeppelin
+cd ../zeppelin || exit
 
 echo "Building zeppelin image"
 docker build --no-cache \

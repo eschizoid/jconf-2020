@@ -68,6 +68,7 @@ spec:
   automountServiceAccountToken: true
   containers:
     - name: zeppelin-server
+      imagePullPolicy: Never
       image: eschizoid/zeppelin:0.9.0-SNAPSHOT
       command: ["sh", "-c", "$(ZEPPELIN_HOME)/bin/zeppelin.sh"]
       lifecycle:

@@ -3,10 +3,10 @@ source .env
 
 ${SPARK_HOME}/bin/spark-submit \
     --master "${SPARK_MASTER}" \
-    --deploy-mode "${SPARK_DEPLOY_MODE}" \
-    --conf "spark.executor.memory=${SPARK_MEMORY}" \
-    --conf "spark.driver.memory=${SPARK_MEMORY}" \
-    --conf "spark.executor.instances=${SPARK_EXECUTOR_INSTANCES}" \
+    --deploy-mode "cluster" \
+    --conf "spark.executor.memory=6G" \
+    --conf "spark.driver.memory=4G" \
+    --conf "spark.executor.instances=1" \
     --conf "spark.kubernetes.authenticate.driver.serviceAccountName=spark" \
     --conf "spark.kubernetes.container.image=docker.io/eschizoid/spark:R" \
     --conf "spark.kubernetes.driverEnv.AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" \

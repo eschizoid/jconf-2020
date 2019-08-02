@@ -6,6 +6,7 @@ ENV LOG_TAG="[ZEPPELIN_${Z_VERSION}]:" \
     Z_HOME="/zeppelin" \
     LANG=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8
+ENV GEOSPARK_VERSION=1.2.0
 
 RUN echo "$LOG_TAG update and install basic packages" && \
     apt-get -y update && \
@@ -58,13 +59,13 @@ RUN echo "$LOG_TAG Install R related packages" && \
     gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9 && \
     gpg -a --export E084DAB9 | apt-key add - && \
     apt-get -y update && \
-    apt-get -y install r-base r-base-dev && \
+    apt-get -y --allow-unauthenticated install r-base r-base-dev && \
     R -e "install.packages('knitr', repos='http://cran.us.r-project.org')" && \
     R -e "install.packages('ggplot2', repos='http://cran.us.r-project.org')" && \
     R -e "install.packages('googleVis', repos='http://cran.us.r-project.org')" && \
     R -e "install.packages('data.table', repos='http://cran.us.r-project.org')" && \
     # for devtools, Rcpp
-    apt-get -y install libcurl4-gnutls-dev libssl-dev && \
+    apt-get -y --allow-unauthenticated install libcurl4-gnutls-dev libssl-dev && \
     R -e "install.packages('devtools', repos='http://cran.us.r-project.org')" && \
     R -e "install.packages('Rcpp', repos='http://cran.us.r-project.org')" && \
     Rscript -e "library('devtools'); library('Rcpp'); install_github('ramnathv/rCharts')"
@@ -84,6 +85,11 @@ ADD dist/zeppelin-${Z_VERSION}.tar.gz /
 RUN ln -s /zeppelin-${Z_VERSION} /zeppelin
 
 COPY dist/log4j.properties ${Z_HOME}/conf/
+COPY helium/geospark-zeppelin.json /${Z_HOME}/helium/geospark-zeppelin.json
+COPY GeoSpark /${Z_HOME}/GeoSpark
+ADD https://repo1.maven.org/maven2/org/datasyslab/geospark/$GEOSPARK_VERSION/geospark-$GEOSPARK_VERSION.jar /opt/spark/jars/geospark-$GEOSPARK_VERSION.jar
+ADD https://repo1.maven.org/maven2/org/datasyslab/geospark-sql_2.1/$GEOSPARK_VERSION/geospark-sql_2.1-$GEOSPARK_VERSION.jar /opt/spark/jars/geospark-sql_2.1-$GEOSPARK_VERSION.jar
+ADD https://repo1.maven.org/maven2/org/datasyslab/geospark-viz_2.1/$GEOSPARK_VERSION/geospark-viz_2.1-$GEOSPARK_VERSION.jar /opt/spark/jars/geospark-viz_2.1-$GEOSPARK_VERSION.jar
 
 EXPOSE 8080
 
