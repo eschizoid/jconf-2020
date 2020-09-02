@@ -1,13 +1,13 @@
-package ChicagoCloudConference
+package JConf
 
 import org.apache.spark.SparkContext
 import org.apache.spark.sql.{SQLContext, SparkSession}
 
 trait SparkSupport {
   val spark: SparkSession = SparkSession.builder
-    .config("spark.sql.streaming.checkpointLocation", "checkpoint_transformation_chicago-cloud-conference")
+    .config("spark.sql.streaming.checkpointLocation", "checkpoint_transformation_jconf")
     .config("parquet.compression", "none")
-    .appName("chicago-cloud-conference-2019 - Transformation")
+    .appName("jconf-2020 - Transformation")
     .master(sys.env("SPARK_MASTER"))
     .getOrCreate()
 

@@ -1,4 +1,4 @@
-package ChicagoCloudConference
+package JConf
 
 import java.util.regex.Pattern
 
@@ -31,7 +31,7 @@ class TransformerSpec extends FlatSpec with Matchers with SparkSupport {
     val parquet = spark.readStream
       .schema(schema)
       .format("json")
-      .load(s"s3a://chicago-cloud-conference-2019/bronze/*/*/part-*.json")
+      .load(s"s3a://jconf-2020/bronze/*/*/part-*.json")
       .select(
         get_json_object($"value", "$.timestamp_ms").alias("timestamp_ms"),
         get_json_object($"value", "$.extended_tweet").alias("extended_tweet"),
@@ -51,8 +51,8 @@ class TransformerSpec extends FlatSpec with Matchers with SparkSupport {
     val query = parquet
       .repartition($"created_at")
       .writeStream
-      .option("checkpointLocation", "checkpoint_transformation_chicago-cloud-conference")
-      .option("path", s"s3a://chicago-cloud-conference-2019/silver")
+      .option("checkpointLocation", "checkpoint_transformation_jconf")
+      .option("path", s"s3a://jconf-2020/silver")
       .outputMode(OutputMode.Append)
       .partitionBy("created_at")
       .start()
