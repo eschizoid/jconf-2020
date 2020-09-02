@@ -14,7 +14,7 @@ spec:
         app: twitter-producer
     spec:
       containers:
-        - image: docker.io/eschizoid/spark:python
+        - image: docker.io/eschizoid/spark-py:3.0.0
           name: twitter-producer
           env:
             - name: CONSUMER_KEY

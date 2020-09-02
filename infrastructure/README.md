@@ -13,7 +13,7 @@ $ brew install weaveworks/tap/eksctl
 ### Starting `eks`
 ```bash
 $ eksctl create cluster \
-    --name=chicago-cloud-conference-2019 \
+    --name=jconf-2020 \
     --nodes=5 \
     --version=1.12 \
     --region=us-east-1 \
@@ -27,12 +27,12 @@ Unfortunately logging and vpc configuration for `eks` clusters cannot be done us
 
 ```bash
 $ aws eks update-cluster-config \
-    --name chicago-cloud-conference-2019 \
+    --name jconf-2020 \
     --region us-east-1 \
     --resources-vpc-config endpointPublicAccess=true,endpointPrivateAccess=true
 
 $ aws eks update-cluster-config \
-    --name chicago-cloud-conference-2019 \
+    --name jconf-2020 \
     --region us-east-1 \
     --logging '{"clusterLogging":[{"types":["api","audit","authenticator","controllerManager","scheduler"],"enabled":true}]}'
 ```
@@ -40,7 +40,7 @@ $ aws eks update-cluster-config \
 ### Stopping `eks`
 ```bash
 $ eksctl delete cluster \
-    --name=chicago-cloud-conference-2019 \
+    --name=jconf-2020 \
     --region=us-east-1
 ```
 
@@ -74,10 +74,10 @@ $ minikuke dashboard
 
 ### Caching spark and zeppelin docker images in `minikube`
 ```bash
-$ minikube cache add eschizoid/spark:2.4.3
+$ minikube cache add eschizoid/spark:3:0.0
 $ minikube cache add eschizoid/spark:python
 $ minikube cache add eschizoid/spark:R
-$ minikube cache add eschizoid/zeppelin:0.9.0-SNAPSHOT
+$ minikube cache add eschizoid/zeppelin:0.9.0-preview1
 ```
 
 ## Building `docker` images
