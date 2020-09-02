@@ -28,7 +28,7 @@ class TwitterStreamer(TwythonStreamer):
             logging.error(f"Unexpected error: {sys.exc_info()[0]}")
             raise e
 
-    def on_error(self, status_code: str, data: str) -> None:
+    def on_error(self, status_code: str, data: str, **kwargs) -> None:
         logging.error(f"{status_code} {data}")
         self.disconnect()
 

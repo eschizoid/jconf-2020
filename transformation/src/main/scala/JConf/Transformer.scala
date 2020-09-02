@@ -1,9 +1,10 @@
-package ChicagoCloudConference
+package JConf
 
 import java.util.regex.Pattern
 
 import com.github.mrpowers.spark.daria.sql.EtlDefinition
 import org.apache.spark.sql.DataFrame
+import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.streaming.OutputMode
 import org.apache.spark.sql.types.{StringType, StructField, StructType}
@@ -16,7 +17,7 @@ class Transformer extends SparkSupport {
   object Regex extends Serializable {
     private val pattern = Pattern.compile("#(\\w*[0-9a-zA-Z]+\\w*[0-9a-zA-Z])")
 
-    def extractAll =
+    def extractAll: UserDefinedFunction =
       udf((text: String) => {
         val matcher = pattern.matcher(text)
         val result  = ListBuffer.empty[String]
@@ -31,14 +32,14 @@ class Transformer extends SparkSupport {
   private val streamingLakeDF = spark.readStream
     .schema(schema)
     .format("json")
-    .load(s"s3a://chicago-cloud-conference-2019/bronze/*/*/part-*.json")
+    .load(s"s3a://jconf-2020/bronze/*/*/part-*.json")
 
   private val etl = EtlDefinition(
     sourceDF = streamingLakeDF,
     transform = parquetTransformer(),
     write = parquetStreamWriter(
-      s"s3a://chicago-cloud-conference-2019/silver",
-      "checkpoint_transformation_chicago-cloud-conference"
+      s"s3a://jconf-2020/silver",
+      "checkpoint_transformation_jconf"
     )
   )
 

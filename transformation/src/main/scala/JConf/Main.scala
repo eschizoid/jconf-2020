@@ -1,4 +1,4 @@
-package ChicagoCloudConference
+package JConf
 
 object Main extends App {
   val transformer = Transformer()

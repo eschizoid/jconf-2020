@@ -4,7 +4,6 @@ plugins {
     id 'com.linkedin.python' version '0.8.11' apply false
     id 'com.github.arekbee.gradle-R-plugin' version '0.12' apply false
     id 'com.github.johnrengelman.shadow' version '5.0.0' apply false
-    id 'com.moowork.node' version '1.2.0' apply false
     id 'com.github.maiflai.scalatest' version '0.25' apply false
 }
 
@@ -20,7 +19,7 @@ ext {
     hadoopAws = '2.7.3'
     scalaVersion = '2.11.8'
     sparkDariaVersion = '0.31.0-s_2.11'
-    sparkVersion = '2.4.3'
+    sparkVersion = '3.0.0'
 }
 
 subprojects {
@@ -40,20 +39,20 @@ subprojects {
     }
 
     task copyPythonExec(type: Copy) {
-        from file("${project.rootDir}/streaming/src/main/python/ChicagoCloudConference/spark_consumer.py")
-        into file("${project.rootDir}/infrastructure/spark/dist/examples/streaming")
-        from file("${project.rootDir}/streaming/src/main/python/ChicagoCloudConference/twitter_producer.py")
-        into file("${project.rootDir}/infrastructure/spark/dist/examples/streaming")
+        from file("${project.rootDir}/streaming/src/main/python/JConf/spark_consumer.py")
+        into file("/opt/spark/examples/streaming")
+        from file("${project.rootDir}/streaming/src/main/python/JConf/twitter_producer.py")
+        into file("/opt/spark/examples/streaming")
     }
 
     task copyRExec(type: Copy) {
-        from file("${project.rootDir}/aggregation/src/main/R/ChicagoCloudConference/aggregator.R")
-        into file("${project.rootDir}/infrastructure/spark/dist/examples/aggregation")
+        from file("${project.rootDir}/aggregation/src/main/R/JConf/aggregator.R")
+        into file("/opt/spark/examples/aggregation")
     }
 
     task copyScalaExec(type: Copy) {
         from file("${project.rootDir}/transformation/build/libs/transformation-1.0-SNAPSHOT-all.jar")
-        into file("${project.rootDir}/infrastructure/spark/dist/examples/transformation")
+        into file("/opt/spark/examples/transformation")
     }
 }
 

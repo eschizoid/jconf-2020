@@ -1,6 +1,6 @@
 r {
     interpreter = getRInterpreter()
-    src = './aggregation/src/main/R/ChicagoCloudConference/*'
+    src = './aggregation/src/main/R/JConf/*'
 }
 
 static def getRInterpreter() {

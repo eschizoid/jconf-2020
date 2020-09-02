@@ -26,15 +26,15 @@ def process_rdd(time: time_, rdd: RDD) -> None:
     else:
         logging.info("----------- %s -----------" % str(time))
         sql_context = get_sql_context_instance(rdd.context)
-        twitts_df = sql_context.createDataFrame(rdd, StringType())
-        twitts_df.write.json(
-            f"""s3a://chicago-cloud-conference-2019/bronze/{time_.strftime(
+        tweets_df = sql_context.createDataFrame(rdd, StringType())
+        tweets_df.write.json(
+            f"""s3a://jconf-2020/bronze/{time_.strftime(
                 "%Y-%m-%d")}/{reverse_current_time_millis()}""")
 
 
 def configure_spark_streaming_context() -> StreamingContext:
     conf = SparkConf()
-    conf.setAppName("chicago-cloud-conference-2019 - Streaming")
+    conf.setAppName("jconf-2020 - Streaming")
     conf.setMaster(os.getenv("SPARK_MASTER"))
     sc = SparkContext(conf=conf)
     logging.info("Spark driver version: " + sc.version)
@@ -45,7 +45,7 @@ def configure_spark_streaming_context() -> StreamingContext:
     hadoop_conf.set("fs.s3a.fast.upload", "true")
     sc.setLogLevel(os.getenv("LOGGING_LEVEL"))
     ssc = StreamingContext(sc, 1)
-    ssc.checkpoint("checkpoint_streaming_chicago-cloud-conference")
+    ssc.checkpoint("checkpoint_streaming_jconf")
     return ssc
 
 

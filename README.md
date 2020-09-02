@@ -1,4 +1,4 @@
-## Chicago Cloud Conference 2019 - Native Spark Executors on K8's: Diving Into a Data Lake
+## JConf 2020 - Native Spark Executors on K8s: Diving Into a Data Lake
 
 Before you clone this repo, please first install [Git Large File Storage](https://help.github.com/en/articles/installing-git-large-file-storage).
 
@@ -20,7 +20,7 @@ Before you clone this repo, please first install [Git Large File Storage](https:
 
 * #### `Java 8`
 
-* #### `Scala 2.11` / `Scala 2.12`
+* #### `Scala 2.12`
 
 * #### `Python 3.7.x`
 

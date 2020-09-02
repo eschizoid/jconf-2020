@@ -8,7 +8,7 @@ library(SparkR)
 
 sc <- sparkR.session(
   master = Sys.getenv("SPARK_MASTER"),
-  appName = "chicago-cloud-conference - Aggregation",
+  appName = "jconf - Aggregation",
   sparkPackages = c("org.apache.hadoop:hadoop-aws:2.7.3")
 )
 
@@ -17,7 +17,7 @@ setLogLevel(Sys.getenv("LOGGING_LEVEL"))
 version <- sprintf("Spark version: %s", sparkR.version())
 print(version)
 
-hConf = SparkR:::callJMethod(sc, "conf")
+hConf <- SparkR:::callJMethod(sc, "conf")
 SparkR:::callJMethod(hConf,
                      "set",
                      "fs.s3a.access.key",
@@ -39,7 +39,7 @@ schema <- structType(
 )
 
 readStream <- read.stream("parquet",
-                          path = "s3a://chicago-cloud-conference-2019/silver/*/part-*.parquet",
+                          path = "s3a://jconf-2020/silver/*/part-*.parquet",
                           schema = schema)
 
 transformStream <-
@@ -66,7 +66,7 @@ transformStream <-
 #   write.stream(
 #     transformStream,
 #     partitionBy = "grain_size",
-#     checkpointLocation = "checkpoint_aggregation_chicago-cloud-conference-console",
+#     checkpointLocation = "checkpoint_aggregation_jconf-console",
 #     outputMode = "complete",
 #     numRows = 50,
 #     truncate = FALSE,
@@ -79,8 +79,8 @@ parquetStream <-
     transformStream,
     partitionBy = "grain_size",
     compression = "none",
-    path = "s3a://chicago-cloud-conference-2019/gold",
-    checkpointLocation = "checkpoint_aggregation_chicago-cloud-conference-s3",
+    path = "s3a://jconf-2020/gold",
+    checkpointLocation = "checkpoint_aggregation_jconf",
     outputMode = "append",
     trigger.processingTime = "1 minutes",
     "parquet"

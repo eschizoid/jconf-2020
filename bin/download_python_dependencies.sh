@@ -7,4 +7,4 @@ wget https://dl.bintray.com/linkedin/maven/com/linkedin/pygradle/pivy-importer/0
 mkdir repo
 
 java -jar pivy-importer-0.9.9-all.jar \
-    --repo /tmp/repo twython:3.7.0 pyspark:2.4.3
+  --repo /tmp/repo twython:3.7.0 pyspark:3.0.0

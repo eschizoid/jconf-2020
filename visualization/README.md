@@ -11,7 +11,7 @@ $ kubectl port-forward zeppelin-server 8080:80
 Zeppelin UI should be accessible using the url  ```http://localhost:8080```
 
 ### Importing Notebook
-Import the file ```$(pwd)/chicago-cloud-conference-2019/visualization/src/resources/notebook.json``` into Zeppelin.
+Import the file ```$(pwd)/jconf-2020/visualization/src/resources/notebook.json``` into Zeppelin.
  
 ![](../images/notebook_import.png)
 
