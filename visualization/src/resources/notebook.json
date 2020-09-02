@@ -38,7 +38,7 @@
       "runtimeInfos": {}
     },
     {
-      "text": "%spark\n\nimport org.apache.spark.sql.functions.max\n\nvar df = sqlContext\n            .read\n            .parquet(\"s3a://chicago-cloud-conference-2019/gold/grain_size=5m\")\n\ndf = df\n    .drop(df.col(\"window\"))\n    .groupBy(\"hashtags\")\n    .agg(max(\"count\").as(\"counts\"))\n\ndf.registerTempTable(\"5m_grain_size\")\n\n\ndf.show()",
+      "text": "%spark\n\nimport org.apache.spark.sql.functions.max\n\nvar df = sqlContext\n            .read\n            .parquet(\"s3a://jconf-2020/gold/grain_size=5m\")\n\ndf = df\n    .drop(df.col(\"window\"))\n    .groupBy(\"hashtags\")\n    .agg(max(\"count\").as(\"counts\"))\n\ndf.registerTempTable(\"5m_grain_size\")\n\n\ndf.show()",
       "user": "anonymous",
       "config": {
         "editorSetting": {
@@ -241,7 +241,7 @@
       "runtimeInfos": {}
     }
   ],
-  "name": "Chicago Cloud Conference 2019 - Visualization",
+  "name": "JConf 2020 - Visualization",
   "id": "2EGBHTHZV",
   "defaultInterpreterGroup": "spark",
   "version": "0.9.0-SNAPSHOT",
@@ -255,5 +255,5 @@
     "personalizedMode": "false"
   },
   "info": {},
-  "path": "/Chicago Cloud Conference 2019 - Visualization"
+  "path": "/JConf 2020 - Visualization"
 }

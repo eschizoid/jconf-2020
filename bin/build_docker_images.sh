@@ -1,21 +1,30 @@
 #!/usr/bin/env bash
 
-cd infrastructure/spark || exit
-
-echo "Building spark 2.4.3 image"
-docker build --no-cache \
-    -t spark:2.4.3 -f Dockerfile .
+echo "Building spark 3.0.0 image"
+/opt/spark/bin/docker-image-tool.sh \
+  -r docker.io/eschizoid \
+  -t 3.0.0 \
+  -b java_image_tag=11-jre-slim \
+  build
 
 echo "Building spark python image"
-docker build --no-cache \
-    -t spark:python -f Dockerfile.python .
+/opt/spark/bin/docker-image-tool.sh \
+  -r docker.io/eschizoid \
+  -t 3.0.0 \
+  -b java_image_tag=11-jre-slim \
+  -p /opt/spark/kubernetes/dockerfiles/spark/bindings/python/Dockerfile \
+  build
 
 echo "Building spark R image"
-docker build --no-cache \
-    -t spark:R -f Dockerfile.R .
+/opt/spark/bin/docker-image-tool.sh \
+  -r docker.io/eschizoid \
+  -t 3.0.0 \
+  -b java_image_tag=11-jre-slim \
+  -R  /opt/spark/kubernetes/dockerfiles/spark/bindings/R/Dockerfile \
+  build
 
-cd ../zeppelin || exit
+#cd ../zeppelin || exit
 
-echo "Building zeppelin image"
-docker build --no-cache \
-    -t zeppelin:0.9.0-SNAPSHOT .
+#echo "Building zeppelin image"
+#docker build --no-cache \
+#    -t eschizoid/zeppelin:0.9.0-preview1 .

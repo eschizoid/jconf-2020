@@ -1,4 +1,4 @@
-rootProject.name = 'chicago-cloud-conference-2019'
+rootProject.name = 'jconf-2020'
 
 include 'streaming'
 include 'transformation'
