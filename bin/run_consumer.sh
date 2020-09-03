@@ -8,6 +8,7 @@ ${SPARK_HOME}/bin/spark-submit \
   --conf "spark.driver.memory=${SPARK_MEMORY}" \
   --conf "spark.executor.instances=${SPARK_EXECUTOR_INSTANCES}" \
   --conf "spark.kubernetes.authenticate.driver.serviceAccountName=spark" \
+  --conf "spark.kubernetes.container.image.pullPolicy=Always" \
   --conf "spark.kubernetes.container.image=docker.io/eschizoid/spark-py:3.0.0" \
   --conf "spark.kubernetes.driverEnv.AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" \
   --conf "spark.kubernetes.driverEnv.AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" \
@@ -19,5 +20,4 @@ ${SPARK_HOME}/bin/spark-submit \
   --conf "spark.kubernetes.driverEnv.TCP_IP=${TCP_IP}" \
   --conf "spark.kubernetes.driverEnv.TCP_PORT=${TCP_PORT}" \
   --conf "spark.kubernetes.pyspark.pythonVersion=3" \
-  file:///opt/spark/examples/streaming/spark_consumer.py \
-  --verbose
+  file:///opt/spark/examples/streaming/spark_consumer.py

@@ -13,21 +13,6 @@ import scala.collection.mutable.ListBuffer
 
 class Transformer extends SparkSupport {
 
-  //https://stackoverflow.com/questions/27579474/serialization-exception-on-spark
-  object Regex extends Serializable {
-    private val pattern = Pattern.compile("#(\\w*[0-9a-zA-Z]+\\w*[0-9a-zA-Z])")
-
-    def extractAll: UserDefinedFunction =
-      udf((text: String) => {
-        val matcher = pattern.matcher(text)
-        val result  = ListBuffer.empty[String]
-        while (matcher.find()) {
-          result += matcher.group()
-        }
-        result.mkString(",")
-      })
-  }
-
   private val schema = StructType(Array(StructField("value", StringType, nullable = true)))
   private val streamingLakeDF = spark.readStream
     .schema(schema)
@@ -46,6 +31,18 @@ class Transformer extends SparkSupport {
   import sqlContext.implicits._
 
   private def parquetTransformer()(df: DataFrame): DataFrame = {
+    val pattern = Pattern.compile("#(\\w*[0-9a-zA-Z]+\\w*[0-9a-zA-Z])")
+
+    def extractAll: UserDefinedFunction =
+      udf((text: String) => {
+        val matcher = pattern.matcher(text)
+        val result  = ListBuffer.empty[String]
+        while (matcher.find()) {
+          result += matcher.group()
+        }
+        result.mkString(",")
+      })
+
     df.select(
         get_json_object($"value", "$.timestamp_ms").alias("timestamp_ms"),
         get_json_object($"value", "$.extended_tweet").alias("extended_tweet"),
@@ -58,8 +55,8 @@ class Transformer extends SparkSupport {
       .withColumn("text", coalesce($"full_text", $"text"))
       .drop("full_text")
       .na
-      .fill("", Seq("text", "location", "hashtags"))
-      .withColumn("hashtags", Regex.extractAll($"text"))
+      .fill("", Seq("text", "location"))
+      .withColumn("hashtags", extractAll($"text"))
       .select($"timestamp_ms", $"created_at", $"text", $"location", $"hashtags")
   }
 

@@ -16,6 +16,7 @@ spec:
       containers:
         - image: docker.io/eschizoid/spark-py:3.0.0
           name: twitter-producer
+          imagePullPolicy: Always
           env:
             - name: CONSUMER_KEY
               value: $CONSUMER_KEY

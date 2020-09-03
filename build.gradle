@@ -18,7 +18,7 @@ allprojects {
 ext {
     hadoopAws = '2.7.3'
     scalaVersion = '2.11.8'
-    sparkDariaVersion = '0.31.0-s_2.11'
+    sparkDariaVersion = '0.35.2-s_2.12'
     sparkVersion = '3.0.0'
 }
 

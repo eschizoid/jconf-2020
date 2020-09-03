@@ -75,8 +75,8 @@ $ minikuke dashboard
 ### Caching spark and zeppelin docker images in `minikube`
 ```bash
 $ minikube cache add eschizoid/spark:3:0.0
-$ minikube cache add eschizoid/spark:python
-$ minikube cache add eschizoid/spark:R
+$ minikube cache add eschizoid/spark-py:3.0.0
+$ minikube cache add eschizoid/spark-r:3.0.0
 $ minikube cache add eschizoid/zeppelin:0.9.0-preview1
 ```
 

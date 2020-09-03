@@ -28,8 +28,7 @@ def process_rdd(time: time_, rdd: RDD) -> None:
         sql_context = get_sql_context_instance(rdd.context)
         tweets_df = sql_context.createDataFrame(rdd, StringType())
         tweets_df.write.json(
-            f"""s3a://jconf-2020/bronze/{time_.strftime(
-                "%Y-%m-%d")}/{reverse_current_time_millis()}""")
+            f"""s3a://jconf-2020/bronze/{time_.strftime("%Y-%m-%d")}/{reverse_current_time_millis()}""")
 
 
 def configure_spark_streaming_context() -> StreamingContext:
@@ -52,7 +51,6 @@ def configure_spark_streaming_context() -> StreamingContext:
 def main():
     try:
         logging.info("Starting up consumer...")
-        os.environ["PYSPARK_SUBMIT_ARGS"] = "--packages org.apache.hadoop:hadoop-aws:2.7.3, pyspark-shell"
         ssc = configure_spark_streaming_context()
         datastream = ssc.socketTextStream(os.getenv("TCP_IP"), int(os.getenv("TCP_PORT")))
         datastream.foreachRDD(process_rdd)
