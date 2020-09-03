@@ -8,6 +8,7 @@ ${SPARK_HOME}/bin/spark-submit \
   --conf "spark.driver.memory=4G" \
   --conf "spark.executor.instances=1" \
   --conf "spark.kubernetes.authenticate.driver.serviceAccountName=spark" \
+  --conf "spark.kubernetes.container.image.pullPolicy=Always" \
   --conf "spark.kubernetes.container.image=docker.io/eschizoid/spark-r:3.0.0" \
   --conf "spark.kubernetes.driverEnv.AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" \
   --conf "spark.kubernetes.driverEnv.AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" \

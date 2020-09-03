@@ -1,15 +1,11 @@
-# @formatter:off
-if (!require(SparkR))
-  install.packages("SparkR", repos = "http://cran.us.r-project.org")
-
-.libPaths(c(file.path(Sys.getenv("SPARK_HOME"), "R", "lib"), .libPaths()))
-
-library(SparkR)
+if (nchar(Sys.getenv("SPARK_HOME")) < 1) {
+  Sys.setenv(SPARK_HOME = "/opt/spark")
+}
+library(SparkR, lib.loc = file.path(Sys.getenv("SPARK_HOME"), "R", "lib"))
 
 sc <- sparkR.session(
   master = Sys.getenv("SPARK_MASTER"),
-  appName = "jconf - Aggregation",
-  sparkPackages = c("org.apache.hadoop:hadoop-aws:2.7.3")
+  appName = "jconf - Aggregation"
 )
 
 setLogLevel(Sys.getenv("LOGGING_LEVEL"))
