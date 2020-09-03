@@ -3,7 +3,7 @@ This project performs the final data preparation before it gets visualized. The 
 data from the silver bucket, calculate the required aggregations, and finally write the results back to the gold bucket.
 
 ### Pre-requisites:
-* R 3.6.x
+* R 3.6.3
 
 ```bash
 $ brew install R

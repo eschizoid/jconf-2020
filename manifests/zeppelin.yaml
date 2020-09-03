@@ -68,8 +68,8 @@ spec:
   automountServiceAccountToken: true
   containers:
     - name: zeppelin-server
-      imagePullPolicy: Never
-      image: eschizoid/zeppelin:0.9.0-SNAPSHOT
+      imagePullPolicy: Always
+      image: eschizoid/zeppelin:0.9.0-preview1
       command: ["sh", "-c", "$(ZEPPELIN_HOME)/bin/zeppelin.sh"]
       lifecycle:
         preStop:
@@ -94,7 +94,7 @@ spec:
               apiVersion: v1
               fieldPath: metadata.name
         - name: ZEPPELIN_K8S_SPARK_CONTAINER_IMAGE
-          value: eschizoid/spark:2.4.3
+          value: eschizoid/spark:3.0.0
         - name: SERVICE_DOMAIN
           valueFrom:
             configMapKeyRef:

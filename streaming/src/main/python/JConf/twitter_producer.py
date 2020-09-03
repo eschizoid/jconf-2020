@@ -12,7 +12,7 @@ logging.basicConfig(format='%(asctime)s %(levelname)-8s %(message)s', level=logg
 
 class TwitterStreamer(TwythonStreamer):
     number_of_batches = 1
-    batch_size = 500
+    batch_size = 100
 
     def __init__(self, tcp_connection, *args, **kwargs):
         self.tweets = []
