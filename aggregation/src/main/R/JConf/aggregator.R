@@ -68,7 +68,7 @@ parquetStream <-
   write.stream(
     repartitionStream,
     compression = "none",
-    path = "s3a://jconf-2020/gold",
+    path = "s3a://jconf-2020/gold/24h",
     checkpointLocation = "checkpoint_aggregation_jconf",
     outputMode = "append",
     trigger.processingTime = "1 minutes",

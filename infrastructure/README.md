@@ -13,12 +13,12 @@ $ brew install weaveworks/tap/eksctl
 ### Starting `eks`
 ```bash
 $ eksctl create cluster \
-    --name=jconf-2020 \
-    --nodes=5 \
-    --version=1.12 \
-    --region=us-east-1 \
-    --node-type t3.xlarge \
-    --zones=us-east-1a,us-east-1b,us-east-1d
+  --name=jconf-2020 \
+  --nodes=5 \
+  --version=1.12 \
+  --region=us-east-1 \
+  --node-type t3.xlarge \
+  --zones=us-east-1a,us-east-1b,us-east-1d
 ```
 
 ### Configure `eks` cluster
@@ -27,21 +27,21 @@ Unfortunately logging and vpc configuration for `eks` clusters cannot be done us
 
 ```bash
 $ aws eks update-cluster-config \
-    --name jconf-2020 \
-    --region us-east-1 \
-    --resources-vpc-config endpointPublicAccess=true,endpointPrivateAccess=true
+  --name jconf-2020 \
+  --region us-east-1 \
+  --resources-vpc-config endpointPublicAccess=true,endpointPrivateAccess=true
 
 $ aws eks update-cluster-config \
-    --name jconf-2020 \
-    --region us-east-1 \
-    --logging '{"clusterLogging":[{"types":["api","audit","authenticator","controllerManager","scheduler"],"enabled":true}]}'
+  --name jconf-2020 \
+  --region us-east-1 \
+  --logging '{"clusterLogging":[{"types":["api","audit","authenticator","controllerManager","scheduler"],"enabled":true}]}'
 ```
 
 ### Stopping `eks`
 ```bash
 $ eksctl delete cluster \
-    --name=jconf-2020 \
-    --region=us-east-1
+  --name=jconf-2020 \
+  --region=us-east-1
 ```
 
 ## Minikube Deployment
@@ -80,6 +80,11 @@ $ minikube cache add eschizoid/spark-r:3.0.0
 $ minikube cache add eschizoid/zeppelin:0.9.0-preview1
 ```
 
+## Building `Sparks` jobs
+```bash
+$ ./bin/build.sh
+```
+
 ## Building `docker` images
 Make sure you have an account with [Docker](https://hub.docker.com).
 [Log in](https://docs.docker.com/engine/reference/commandline/login/) to docker 
@@ -101,7 +106,7 @@ $ ./bin/run_producer.sh
 
 ### Spark Consumer (`python`)
 ```bash
-$ ./bin/run_producer.sh
+$ ./bin/run_consumer.sh
 ```
 
 ### Spark Transformer (`scala`)
@@ -114,7 +119,7 @@ $ ./bin/run_transformer
 $ ./bin/run_aggregator
 ```
 
-### Spark Visualizer (`node` / `notebook`)
+### Spark Visualizer (`notebook`)
 ```bash
 $ ./bin/run_visualizer.sh
 ```
