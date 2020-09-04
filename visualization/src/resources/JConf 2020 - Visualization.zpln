@@ -1,8 +1,9 @@
 ﻿{
   "paragraphs": [
     {
-      "text": "%spark.conf\n\nspark.executor.instances        1\nspark.jars.packages             com.amazonaws:aws-java-sdk:version:1.7.4,org.apache.hadoop:hadoop-aws:2.7.3\nspark.hadoop.fs.s3a.impl        org.apache.hadoop.fs.s3a.S3AFileSystem  \nspark.hadoop.fs.s3a.access.key  AWS_ACCESS_KEY  \nspark.hadoop.fs.s3a.secret.key  AWS_SECRET_KEY\nzeppelin.spark.sql.stacktrace   true\n\n\n\n\n\n\n\n",
+      "text": "%spark.conf\n\nspark.executor.instances        1\nspark.hadoop.fs.s3a.impl        org.apache.hadoop.fs.s3a.S3AFileSystem  \nspark.hadoop.fs.s3a.access.key  AWS_ACCESS_KEY_ID  \nspark.hadoop.fs.s3a.secret.key  AWS_SECRET_ACCESS_KEY\nspark.eventLog.enabled          false\nzeppelin.spark.sql.stacktrace   true\n\n\n\n\n\n\n\n",
       "user": "anonymous",
+      "dateUpdated": "2020-09-04T03:40:48+0000",
       "config": {
         "editorSetting": {
           "language": "text",
@@ -28,18 +29,21 @@
         "msg": []
       },
       "apps": [],
+      "runtimeInfos": {},
       "progressUpdateIntervalMs": 500,
-      "jobName": "paragraph_1563050822385_1163957920",
+      "jobName": "paragraph_1599184157430_207843097",
       "id": "paragraph_1563050822385_1163957920",
-      "dateCreated": "2019-07-14T06:53:50+0000",
+      "dateCreated": "2020-09-04T01:49:17+0000",
       "status": "FINISHED",
       "focus": true,
-      "$$hashKey": "object:305",
-      "runtimeInfos": {}
+      "$$hashKey": "object:7030",
+      "dateFinished": "2020-09-04T03:37:53+0000",
+      "dateStarted": "2020-09-04T03:37:53+0000"
     },
     {
-      "text": "%spark\n\nimport org.apache.spark.sql.functions.max\n\nvar df = sqlContext\n            .read\n            .parquet(\"s3a://jconf-2020/gold/grain_size=5m\")\n\ndf = df\n    .drop(df.col(\"window\"))\n    .groupBy(\"hashtags\")\n    .agg(max(\"count\").as(\"counts\"))\n\ndf.registerTempTable(\"5m_grain_size\")\n\n\ndf.show()",
+      "text": "%spark\n\nimport org.apache.spark.sql.functions.max\n\nvar df = sqlContext\n            .read\n            .parquet(\"s3a://jconf-2020/gold/grain_size=5.0\")\n\ndf = df\n    .drop(df.col(\"window\"))\n    .groupBy(\"hashtags\")\n    .agg(max(\"count\").as(\"counts\"))\n\ndf.registerTempTable(\"5m_grain_size\")\n\ndf.show()",
       "user": "anonymous",
+      "dateUpdated": "2020-09-04T03:38:38+0000",
       "config": {
         "editorSetting": {
           "language": "scala",
@@ -60,13 +64,16 @@
         "params": {},
         "forms": {}
       },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\u001b[33mwarning: \u001b[0mthere was one deprecation warning (since 2.0.0); for details, enable `:setting -deprecation' or `:replay -deprecation'\n+--------------------+------+\n|            hashtags|counts|\n+--------------------+------+\n|            #wiunion|     1|\n|#TrumpAccomplishm...|     1|\n| #GOPBetrayedAmerica|     1|\n| #TrumpSetUpByBarber|     2|\n|             #Resist|     4|\n|           #Lawrence|     1|\n|          #fucktrump|     1|\n|           #BREAKING|     4|\n|           #FISAGate|     1|\n|              #black|     1|\n|     #PutinsBounties|     2|\n|                #gay|     1|\n|#JoeBidenIsBurnin...|     1|\n|               #biLL|     1|\n|      #DrainTheSwamp|     1|\n|           #Veterans|     2|\n|          #LeadRight|     1|\n|           #Pentagon|     2|\n|               #1029|     1|\n|#Vote4KindnessVot...|     1|\n+--------------------+------+\nonly showing top 20 rows\n\nimport org.apache.spark.sql.functions.max\n\u001b[1m\u001b[34mdf\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [hashtags: string, counts: bigint]\ndf: org.apache.spark.sql.DataFrame = [hashtags: string, counts: bigint]\n"
+          }
+        ]
+      },
       "apps": [],
-      "progressUpdateIntervalMs": 500,
-      "jobName": "paragraph_1563050875737_-1692011881",
-      "id": "paragraph_1563050875737_-1692011881",
-      "dateCreated": "2019-07-14T06:54:05+0000",
-      "status": "FINISHED",
-      "$$hashKey": "object:306",
       "runtimeInfos": {
         "jobUrl": {
           "propertyName": "jobUrl",
@@ -75,17 +82,42 @@
           "group": "spark",
           "values": [
             {
-              "jobUrl": "//4040-spark-wysodu.local.zeppelin-project.org:8080/jobs/job?id=3",
-              "$$hashKey": "object:1277"
+              "jobUrl": "//4040-spark-hkqwms.local.zeppelin-project.org:8080/jobs/job?id=32",
+              "$$hashKey": "object:9535"
+            },
+            {
+              "jobUrl": "//4040-spark-hkqwms.local.zeppelin-project.org:8080/jobs/job?id=33",
+              "$$hashKey": "object:9536"
+            },
+            {
+              "jobUrl": "//4040-spark-hkqwms.local.zeppelin-project.org:8080/jobs/job?id=34",
+              "$$hashKey": "object:9537"
+            },
+            {
+              "jobUrl": "//4040-spark-hkqwms.local.zeppelin-project.org:8080/jobs/job?id=35",
+              "$$hashKey": "object:9538"
+            },
+            {
+              "jobUrl": "//4040-spark-hkqwms.local.zeppelin-project.org:8080/jobs/job?id=36",
+              "$$hashKey": "object:9539"
             }
           ],
           "interpreterSettingId": "spark"
         }
-      }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1599184157431_-288879758",
+      "id": "paragraph_1563050875737_-1692011881",
+      "dateCreated": "2020-09-04T01:49:17+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:7031",
+      "dateFinished": "2020-09-04T03:38:39+0000",
+      "dateStarted": "2020-09-04T03:38:38+0000"
     },
     {
       "text": "%spark.sql\n\nSELECT hashtags, counts\nFROM 5m_grain_size\nORDER BY counts DESC\nLIMIT 10\n",
       "user": "anonymous",
+      "dateUpdated": "2020-09-04T03:38:46+0000",
       "config": {
         "editorSetting": {
           "language": "sql",
@@ -223,29 +255,71 @@
         "msg": [
           {
             "type": "TABLE",
-            "data": "hashtags\tcounts\n#Trump\t143\n#GoogleGate\t53\n#MAGA\t47\n#trump\t34\n#OANN\t26\n#Manama\t24\n#TrumpCamps\t24\n#KAG2020\t23\n#TrumpConcentrationCamps\t22\n#MeganRapinoe\t21\n"
-          },
-          {
-            "type": "TEXT",
-            "data": ""
+            "data": "hashtags\tcounts\n#Trump\t94\n#MakeAmericaGreatAgain\t27\n#ViolentTrump\t26\n#coronavirus\t24\n#MAGA\t19\n#TrumpIsANationalDisgrace\t18\n#TraitorTrump\t15\n#TrumpTraitor\t15\n#trump\t15\n#BountyGate\t14\n"
           }
         ]
       },
       "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "//4040-spark-hkqwms.local.zeppelin-project.org:8080/jobs/job?id=37",
+              "$$hashKey": "object:9595"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
       "progressUpdateIntervalMs": 500,
-      "jobName": "paragraph_1563063719157_931007043",
+      "jobName": "paragraph_1599184157432_-1100664976",
       "id": "paragraph_1563063719157_931007043",
-      "dateCreated": "2019-07-14T06:52:45+0000",
+      "dateCreated": "2020-09-04T01:49:17+0000",
       "status": "FINISHED",
-      "$$hashKey": "object:307",
-      "runtimeInfos": {}
+      "$$hashKey": "object:7032",
+      "dateFinished": "2020-09-04T03:38:48+0000",
+      "dateStarted": "2020-09-04T03:38:46+0000"
+    },
+    {
+      "text": "%spark.sql\n",
+      "user": "anonymous",
+      "dateUpdated": "2020-09-04T01:55:31+0000",
+      "config": {
+        "colWidth": 12,
+        "fontSize": 9,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1599184531889_297984751",
+      "id": "paragraph_1599184531889_297984751",
+      "dateCreated": "2020-09-04T01:55:31+0000",
+      "status": "READY",
+      "focus": true,
+      "$$hashKey": "object:7840"
     }
   ],
   "name": "JConf 2020 - Visualization",
-  "id": "2EGBHTHZV",
+  "id": "2FGSAKECR",
   "defaultInterpreterGroup": "spark",
-  "version": "0.9.0-SNAPSHOT",
-  "permissions": {},
+  "version": "0.9.0-preview1",
   "noteParams": {},
   "noteForms": {},
   "angularObjects": {},
