@@ -69,6 +69,7 @@ spec:
   containers:
   - name: zeppelin-server
     image: eschizoid/zeppelin:0.9.0-preview1
+    imagePullPolicy: Always
     command: ["sh", "-c", "$(ZEPPELIN_HOME)/bin/zeppelin.sh"]
     lifecycle:
       preStop:

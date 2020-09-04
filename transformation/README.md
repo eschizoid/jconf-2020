@@ -1,10 +1,9 @@
 ## Transformation
-The purpose of this project is to transform a raw json tweet into parquet columnar format by parsing and later
-extracting the required information for the aggregated data.
+The purpose of this project is to transform a raw `json` tweet into columnar format `parquet`.
 
 ### Pre-requisites:
 * Java 1.8.x
-* Scala Scala 2.11 / 2.12
+* Scala Scala 2.12
 
 ```bash
 $ brew tap caskroom/versions

@@ -118,8 +118,6 @@ RUN echo "$LOG_TAG Download Zeppelin binary" && \
 
 COPY log4j.properties ${Z_HOME}/conf/
 
-USER 1000
-
 EXPOSE 8080
 
 ENTRYPOINT [ "/usr/bin/tini", "--" ]
