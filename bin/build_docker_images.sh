@@ -23,4 +23,5 @@ echo "Building spark R image"
 echo "Building zeppelin image"
 cd infrastructure/zeppelin || exit
 docker build \
+  --no-cache \
   -t eschizoid/zeppelin:0.9.0-preview1 .
