@@ -22,9 +22,6 @@ SparkR:::callJMethod(hConf,
                      "set",
                      "fs.s3a.secret.key",
                      Sys.getenv("AWS_SECRET_ACCESS_KEY"))
-SparkR:::callJMethod(hConf,
-                     "set",
-                     "fs.s3a.fast.upload", "true")
 
 schema <- structType(
   structField("timestamp_ms", "string"),
@@ -38,44 +35,40 @@ readStream <- read.stream("parquet",
                           path = "s3a://jconf-2020/silver/*/part-*.parquet",
                           schema = schema)
 
-transformStream <-
-  selectExpr(
-    readStream,
-    "to_timestamp(cast(timestamp_ms as bigint) / 1000) as timestamp",
-    "explode(split(hashtags, ',')) as hashtags"
+selectStream <- selectExpr(
+  readStream,
+  "to_timestamp(cast(timestamp_ms as bigint) / 10000) as timestamp",
+  "explode(split(hashtags, ',')) as hashtags"
+)
+filterStream <- filter(selectStream, selectStream$hashtags != "")
+watermarkStream <- withWatermark(filterStream, "timestamp", "240 hours")
+countStream <- count(
+  groupBy(
+    filterStream,
+    window(watermarkStream$"timestamp", "24 hour"),
+    watermarkStream$hashtags
   )
-transformStream <-
-  filter(transformStream,
-         transformStream$hashtags != "")
-transformStream <-
-  withWatermark(transformStream,
-                "timestamp", "10 minute")
-transformStream <- count(groupBy(
-  transformStream,
-  window(transformStream$timestamp, "5 minute"),
-  transformStream$hashtags
-))
-transformStream <-
-  withColumn(transformStream, "grain_size", lit("5m"))
+)
+withColumnStream <- withColumn(countStream, "grain_size", lit("24h"))
+repartitionStream <- repartition(withColumnStream, col = withColumnStream$"grain_size")
 
-# consoleStream <-
-#   write.stream(
-#     transformStream,
-#     partitionBy = "grain_size",
-#     checkpointLocation = "checkpoint_aggregation_jconf-console",
-#     outputMode = "complete",
-#     numRows = 50,
-#     truncate = FALSE,
-#     trigger.processingTime = "1 minutes",
-#     "console"
-# )
+#consoleStream <-
+#  write.stream(
+#    transformStream,
+#    partitionBy = "grain_size",
+#    checkpointLocation = "checkpoint_aggregation_jconf-console",
+#    outputMode = "complete",
+#    numRows = 50,
+#    truncate = FALSE,
+#    trigger.processingTime = "1 minutes",
+#    "console"
+#)
 
 parquetStream <-
   write.stream(
-    transformStream,
-    partitionBy = "grain_size",
+    repartitionStream,
     compression = "none",
-    path = "s3a://jconf-2020/gold",
+    path = "s3a://jconf-2020/gold/24h",
     checkpointLocation = "checkpoint_aggregation_jconf",
     outputMode = "append",
     trigger.processingTime = "1 minutes",

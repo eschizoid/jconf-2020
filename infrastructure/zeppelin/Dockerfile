@@ -81,12 +81,21 @@ RUN echo "$LOG_TAG Install R related packages" && \
     R -e "install.packages('Rcpp', repos='http://cran.us.r-project.org')" && \
     Rscript -e "library('devtools'); library('Rcpp'); install_github('ramnathv/rCharts')"
 
-# Install kubectl
-RUN apt-get install -y apt-transport-https && \
+RUN echo "$LOG_TAG Install kubectl" && \
+    apt-get install -y apt-transport-https && \
     curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
     echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | tee -a /etc/apt/sources.list.d/kubernetes.list && \
     apt-get update && \
     apt-get install -y kubectl
+
+RUN echo "$LOG_TAG Install Spark 3.0.0" && \
+    wget http://mirrors.ibiblio.org/apache/spark/spark-3.0.0/spark-3.0.0-bin-hadoop3.2.tgz && \
+    tar -xvzf spark-3.0.0-bin-hadoop3.2.tgz && \
+    mv spark-3.0.0-bin-hadoop3.2 /opt/spark && \
+    rm spark-3.0.0-bin-hadoop3.2.tgz && \
+    wget https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.2.0/hadoop-aws-3.2.0.jar -O /opt/spark/jars/hadoop-aws-3.2.0.jar && \
+    wget https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.11.563/aws-java-sdk-bundle-1.11.563.jar -O /opt/spark/jars/aws-java-sdk-bundle-1.11.563.jar && \
+    chmod -R 777 /opt/spark/jars
 
 RUN echo "$LOG_TAG Cleanup" && \
     apt-get autoclean && \
