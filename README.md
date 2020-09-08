@@ -16,7 +16,7 @@ Before you clone this repo, please first install [Git Large File Storage](https:
 
 * #### [Visualization](visualization/README.md)
 
-### Required Runtime's
+### Required Runtimes
 
 * #### `Java 8`
 

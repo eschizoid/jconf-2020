@@ -15,26 +15,10 @@ $ brew install weaveworks/tap/eksctl
 $ eksctl create cluster \
   --name=jconf-2020 \
   --nodes=5 \
-  --version=1.12 \
+  --version=1.17 \
   --region=us-east-1 \
   --node-type t3.xlarge \
   --zones=us-east-1a,us-east-1b,us-east-1d
-```
-
-### Configure `eks` cluster
-Unfortunately logging and vpc configuration for `eks` clusters cannot be done using `eksctl`. The ticket can be followed
-[here](https://github.com/weaveworks/eksctl/issues/649).
-
-```bash
-$ aws eks update-cluster-config \
-  --name jconf-2020 \
-  --region us-east-1 \
-  --resources-vpc-config endpointPublicAccess=true,endpointPrivateAccess=true
-
-$ aws eks update-cluster-config \
-  --name jconf-2020 \
-  --region us-east-1 \
-  --logging '{"clusterLogging":[{"types":["api","audit","authenticator","controllerManager","scheduler"],"enabled":true}]}'
 ```
 
 ### Stopping `eks`
