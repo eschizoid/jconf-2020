@@ -9,6 +9,10 @@ data from the silver bucket, calculate the required aggregations, and finally wr
 $ brew install R
 ```
 
+### Configuring Watermark
+
+https://stackoverflow.com/questions/44187987/not-able-to-write-data-in-parquet-file-using-spark-structured-streaming
+
 Make sure you set the following env variables:
 * `R_BIN` (usually the output of `which R`)
 * `SPARK_HOME` (usually the output of `which spark`)
