@@ -19,7 +19,7 @@ Import the file ```$(pwd)/jconf-2020/visualization/src/resources/JConf 2020 - Vi
 Add the following properties to the spark interpreter:
 ```
 SPARK_SUBMIT_OPTIONS --conf spark.jars.ivy=/tmp/.ivy
-SPARK_USER zeppelin 
+SPARK_USER zeppelin
 ```
 
 ### Running Notebook

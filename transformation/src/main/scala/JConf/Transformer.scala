@@ -7,7 +7,7 @@ import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.streaming.OutputMode
-import org.apache.spark.sql.types.{StringType, StructField, StructType}
+import org.apache.spark.sql.types.{ StringType, StructField, StructType }
 
 import scala.collection.mutable.ListBuffer
 
@@ -19,37 +19,26 @@ class Transformer extends SparkSupport {
     .format("json")
     .load(s"s3a://jconf-2020/bronze/*/*/part-*.json")
 
-  private val etl = EtlDefinition(
-    sourceDF = streamingLakeDF,
-    transform = parquetTransformer(),
-    write = parquetStreamWriter(
-      s"s3a://jconf-2020/silver",
-      "checkpoint_transformation_jconf"
-    )
-  )
-
-  import sqlContext.implicits._
-
   private def parquetTransformer()(df: DataFrame): DataFrame = {
     val pattern = Pattern.compile("#(\\w*[0-9a-zA-Z]+\\w*[0-9a-zA-Z])")
 
     def extractAll: UserDefinedFunction =
-      udf((text: String) => {
+      udf { (text: String) =>
         val matcher = pattern.matcher(text)
         val result  = ListBuffer.empty[String]
         while (matcher.find()) {
           result += matcher.group()
         }
         result.mkString(",")
-      })
+      }
 
+    import sqlContext.implicits._
     df.select(
-        get_json_object($"value", "$.timestamp_ms").alias("timestamp_ms"),
-        get_json_object($"value", "$.extended_tweet").alias("extended_tweet"),
-        get_json_object($"value", "$.text").alias("text"),
-        get_json_object($"value", "$.user").alias("user")
-      )
-      .withColumn("created_at", to_date(from_unixtime($"timestamp_ms" / 1000), "yyyy-MM-dd"))
+      get_json_object($"value", "$.timestamp_ms").alias("timestamp_ms"),
+      get_json_object($"value", "$.extended_tweet").alias("extended_tweet"),
+      get_json_object($"value", "$.text").alias("text"),
+      get_json_object($"value", "$.user").alias("user")
+    ).withColumn("created_at", to_date(from_unixtime($"timestamp_ms" / 1000), "yyyy-MM-dd"))
       .withColumn("location", get_json_object($"user", "$.location"))
       .withColumn("full_text", get_json_object($"extended_tweet", "$.full_text"))
       .withColumn("text", coalesce($"full_text", $"text"))
@@ -61,6 +50,7 @@ class Transformer extends SparkSupport {
   }
 
   private def parquetStreamWriter(dataPath: String, checkpointPath: String)(df: DataFrame): Unit = {
+    import sqlContext.implicits._
     val query = df
       .repartition($"created_at")
       .writeStream
@@ -73,9 +63,16 @@ class Transformer extends SparkSupport {
     query.awaitTermination()
   }
 
-  def start() {
-    etl.process()
-  }
+  private val etl = EtlDefinition(
+    sourceDF = streamingLakeDF,
+    transform = parquetTransformer(),
+    write = parquetStreamWriter(
+      s"s3a://jconf-2020/silver",
+      "checkpoint_transformation_jconf"
+    )
+  )
+
+  def start(): Unit = etl.process()
 }
 
 object Transformer {

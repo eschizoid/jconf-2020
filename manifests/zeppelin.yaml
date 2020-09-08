@@ -104,7 +104,7 @@ spec:
           name: zeppelin-server-conf
           key: serviceDomain
     - name: MASTER   # default value of 'master' property for spark interpreter.
-      value: k8s://A11317E03E82676E14BEC05FFBE7211B.gr7.us-east-1.eks.amazonaws.com
+      value: https://474C8218F5425F5BB9DAE36CC08135C6.gr7.us-east-1.eks.amazonaws.com
     - name: SPARK_HOME # default value of 'SPARK_HOME' property for spark interpreter.
       value: /spark
     # volumeMounts:

@@ -1,7 +1,7 @@
 package JConf
 
 import org.apache.spark.SparkContext
-import org.apache.spark.sql.{SQLContext, SparkSession}
+import org.apache.spark.sql.{ SQLContext, SparkSession }
 
 trait SparkSupport {
   val spark: SparkSession = SparkSession.builder
@@ -24,7 +24,5 @@ trait SparkSupport {
 
   init()
 
-  def close(): Unit = {
-    spark.close()
-  }
+  def close(): Unit = spark.close()
 }

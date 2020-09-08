@@ -2,10 +2,10 @@ package JConf
 
 import java.util.regex.Pattern
 
-import org.apache.spark.sql.functions.{coalesce, from_unixtime, get_json_object, to_date, udf}
+import org.apache.spark.sql.functions.{ coalesce, from_unixtime, get_json_object, to_date, udf }
 import org.apache.spark.sql.streaming.OutputMode
-import org.apache.spark.sql.types.{StringType, StructField, StructType}
-import org.scalatest.{FlatSpec, Matchers}
+import org.apache.spark.sql.types.{ StringType, StructField, StructType }
+import org.scalatest.{ FlatSpec, Matchers }
 
 import scala.collection.mutable.ListBuffer
 
@@ -18,14 +18,14 @@ class TransformerSpec extends FlatSpec with Matchers with SparkSupport {
     val pattern = Pattern.compile("#(\\w*[0-9a-zA-Z]+\\w*[0-9a-zA-Z])")
 
     def regexp_extractAll =
-      udf((text: String) => {
+      udf { (text: String) =>
         val matcher = pattern.matcher(text)
         val result  = ListBuffer.empty[String]
         while (matcher.find()) {
           result += matcher.group()
         }
         result.mkString(",")
-      })
+      }
 
     val schema = StructType(Array(StructField("value", StringType, nullable = true)))
     val parquet = spark.readStream
